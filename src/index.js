@@ -13,9 +13,9 @@ import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 export const RACE = {
     id: Number(process.env.REACT_APP_L2_CHAIN_ID),
-    name: "RACE Testnet",
-    network: "RACE",
-    iconUrl: "https://i.imgur.com/Q3oIdip.png",
+    name: "Hypr Testnet",
+    network: "Hypr",
+    iconUrl: "https://i.imgur.com/90fZHJQ.png",
     iconBackground: "#000000",
     nativeCurrency: {
         decimals: 18,
@@ -28,7 +28,7 @@ export const RACE = {
         },
     },
     blockExplorers: {
-        default: { name: "RACE Testnet Explorer", url: process.env.REACT_APP_L2_EXPLORER_URL }
+        default: { name: "Hypr Testnet Explorer", url: process.env.REACT_APP_L2_EXPLORER_URL }
     },
     testnet: true
 

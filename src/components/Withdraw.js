@@ -6,7 +6,7 @@ import { Dai, Usdt, Usdc, Ethereum } from 'react-web3-icons';
 import { MdOutlineSecurity } from "react-icons/md"
 import { FaEthereum } from "react-icons/fa"
 import Web3 from 'web3';
-import toIcn from "../assets/images/full_white_mixed.svg"
+import toIcn from "../assets/images/logo_circle.svg"
 import { useAccount, useConnect, useNetwork, useSwitchNetwork, useBalance } from 'wagmi'
 import { InjectedConnector } from 'wagmi/connectors/injected';
 import { IoMdWallet } from "react-icons/io"
@@ -267,7 +267,7 @@ const Withdraw = () => {
           <div className='deposit_price_wrap'>
             <div className='deposit_price_title'>
               <p>From</p>
-              <h5><Image src={toIcn} alt="To icn" fluid /> Race</h5>
+              <h5><Image src={toIcn} alt="To icn" fluid /> Hypr</h5>
             </div>
             <div className='deposit_input_wrap'>
               <Form>
@@ -301,7 +301,7 @@ const Withdraw = () => {
             </div>
           </div>
           <div className="deposit_btn_wrap">
-            {checkMetaMask === true ? <a className='btn deposit_btn' href='https://metamask.io/' target='_blank'><Image src={metamask} alt="metamask icn" fluid /> Please Install Metamask Wallet</a> : !isConnected ? <button className='btn deposit_btn' onClick={() => connect()}><IoMdWallet />Connect Wallet</button> : chain.id !== Number(process.env.REACT_APP_L2_CHAIN_ID) ? <button className='btn deposit_btn' onClick={handleSwitch}><HiSwitchHorizontal />Switch to RACE Testnet</button> : <button className='btn deposit_btn' onClick={handleWithdraw} disabled={loader ? true : false}>{loader ? <Spinner animation="border" role="status">
+            {checkMetaMask === true ? <a className='btn deposit_btn' href='https://metamask.io/' target='_blank'><Image src={metamask} alt="metamask icn" fluid /> Please Install Metamask Wallet</a> : !isConnected ? <button className='btn deposit_btn' onClick={() => connect()}><IoMdWallet />Connect Wallet</button> : chain.id !== Number(process.env.REACT_APP_L2_CHAIN_ID) ? <button className='btn deposit_btn' onClick={handleSwitch}><HiSwitchHorizontal />Switch to Hypr Testnet</button> : <button className='btn deposit_btn' onClick={handleWithdraw} disabled={loader ? true : false}>{loader ? <Spinner animation="border" role="status">
               <span className="visually-hidden">Loading...</span>
             </Spinner> : "Withdraw"}</button>}
           </div>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import "../assets/style/deposit.scss";
 import { Form, Spinner, Image } from "react-bootstrap"
 import { Dai, Usdt,Usdc , Ethereum } from 'react-web3-icons';
-import toIcn from "../assets/images/full_white_mixed.svg"
+import toIcn from "../assets/images/logo_circle.svg"
 import { IoMdWallet } from "react-icons/io"
 import { FaEthereum } from "react-icons/fa"
 import { useAccount, useConnect, useNetwork, useSwitchNetwork, useBalance, useToken } from 'wagmi'
@@ -246,7 +246,7 @@ const Deposit = () => {
                     <div className='deposit_details_wrap'>
                         <div className="deposit_details">
                             <p>To</p>
-                            <h5><Image src={toIcn} alt="To icn" fluid /> Race</h5>
+                            <h5><Image src={toIcn} alt="To icn" fluid /> Hypr</h5>
                         </div>
                         <div className='deposit_inner_details'>
                             {sendToken == "ETH" ? <span className='input_icn'> <Ethereum style={{ fontSize: '1.5rem' }}/></span> : sendToken == "DAI" ? <span className='input_icn'><Dai style={{ fontSize: '1.5rem' }}/></span> : sendToken == "USDT" ? <span className='input_icn'> <Usdt style={{ fontSize: '1.5rem' }}/></span> : <span className='input_icn'> <Usdc style={{ fontSize: '1.5rem' }}/></span> }  <p> You’ll receive: {ethValue ? ethValue : "0"} {sendToken}</p>
