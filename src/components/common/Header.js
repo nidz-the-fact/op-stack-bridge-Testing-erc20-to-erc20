@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import "../../assets/style/common/header.scss"
 import { Navbar, Container, Nav, Image, Dropdown, OverlayTrigger, Tooltip } from "react-bootstrap";
-import logo from "../../assets/images/logo.png";
+import logo from "../../assets/images/full_white_mixed.svg";
 import { Link } from 'react-router-dom';
 import { useAccount, useConnect, useNetwork } from 'wagmi'
 import { InjectedConnector } from 'wagmi/connectors/injected'
@@ -63,7 +63,7 @@ const HeaderNew = () => {
             <header className='app_header'>
                 <Navbar expand="lg" variant="dark">
                     <Container fluid>
-                        <Link to="/" className='app_logo'>
+                        <Link to="https://www.hypr.network" className='app_logo'>
                             <Image src={logo} alt="logo" fluid />
                         </Link>
                         <Navbar.Toggle aria-controls="navbarScroll" />

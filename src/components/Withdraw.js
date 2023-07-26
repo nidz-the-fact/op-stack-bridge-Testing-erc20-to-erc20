@@ -6,7 +6,7 @@ import { Dai, Usdt, Usdc, Ethereum } from 'react-web3-icons';
 import { MdOutlineSecurity } from "react-icons/md"
 import { FaEthereum } from "react-icons/fa"
 import Web3 from 'web3';
-import toIcn from "../assets/images/logo.png"
+import toIcn from "../assets/images/full_white_mixed.svg"
 import { useAccount, useConnect, useNetwork, useSwitchNetwork, useBalance } from 'wagmi'
 import { InjectedConnector } from 'wagmi/connectors/injected';
 import { IoMdWallet } from "react-icons/io"
