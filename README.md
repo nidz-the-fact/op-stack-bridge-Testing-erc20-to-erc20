@@ -7,7 +7,7 @@ The `op-Bridge` is a service for op-stack chains which provides a functional UI 
 Clone this repo
 
 ```
-git clone https://github.com/nitantchhajed/op-stack-bridge.git
+git clone https://github.com/HyprNetwork/op-stack-bridge.git
 
 yarn 
 ```
