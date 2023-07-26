@@ -1,4 +1,4 @@
-# @op-stack/bridge
+# Hypr OP Bridge
 
 The `op-Bridge` is a service for op-stack chains which provides a functional UI for the Bridging between L1 and L2.
 
