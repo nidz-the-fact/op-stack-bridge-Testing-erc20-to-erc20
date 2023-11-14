@@ -45,7 +45,7 @@ const Withdraw = () => {
   const [metaMastError, setMetaMaskError] = useState("")
   const { error, isLoading, pendingChainId, switchNetwork } = useSwitchNetwork({
     // throwForSwitchChainNotSupported: true,
-    chainId: 90001,
+    chainId: process.env.REACT_APP_L2_CHAIN_ID,
     onError(error) {
       console.log('Error', error)
     },
