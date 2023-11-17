@@ -16,7 +16,7 @@ const Footer = () => {
         </div>
         <div className='footer_icn_wrap'>
           <ul>
-            <li><Link to="https://twitter.com/op_hypr"><AiFillTwitterCircle /></Link></li>
+            <li><Link to="https://twitter.com/hypr_network"><AiFillTwitterCircle /></Link></li>
           </ul>
         </div>
         {/* </Container> */}
