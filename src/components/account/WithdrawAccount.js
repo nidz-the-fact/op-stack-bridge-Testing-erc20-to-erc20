@@ -143,7 +143,7 @@ const WithdrawAccount = () => {
 
     useEffect(() => {
         if (isConnected) {
-            if (chain.id !== 5) {
+            if (chain.id !== 1) {
                 switchNetwork(process.env.REACT_APP_L1_CHAIN_ID)
             } else {
                 getWithdraw()
