@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import "../assets/style/deposit.scss";
 import "../assets/style/withdraw.scss";
 import { Form, Image, Spinner } from "react-bootstrap";
-import { Dai, Usdt, Usdc, Ethereum } from 'react-web3-icons';
+import { Usdt, Usdc, Ethereum } from 'react-web3-icons';
 import { MdOutlineSecurity } from "react-icons/md"
 import { FaEthereum } from "react-icons/fa"
 import Web3 from 'web3';
@@ -89,7 +89,7 @@ const Withdraw = () => {
 
   const { data } = useBalance({ address: address, chainId: Number(process.env.REACT_APP_L2_CHAIN_ID), watch: true })
   const dataUSDT = useBalance({ address: address, chainId: Number(process.env.REACT_APP_L2_CHAIN_ID), token: process.env.REACT_APP_L2_USDT, watch: true });
-  const dataDAI = useBalance({ address: address, chainId: Number(process.env.REACT_APP_L2_CHAIN_ID), token: process.env.REACT_APP_L2_HYPR, watch: true });
+  const dataHYPR = useBalance({ address: address, chainId: Number(process.env.REACT_APP_L2_CHAIN_ID), token: process.env.REACT_APP_L2_HYPR, watch: true });
   const dataUSDC = useBalance({ address: address, chainId: Number(process.env.REACT_APP_L2_CHAIN_ID), token: process.env.REACT_APP_L2_USDC, watch: true });
 
   ////========================================================== WITHDRAW =======================================================================
@@ -158,12 +158,12 @@ const Withdraw = () => {
               }
 
             }
-            if (sendToken == "DAI") {
+            if (sendToken == "HYPR") {
               var daiValue = Web3.utils.toWei(ethValue, "ether")
               setLoader(true);
               var depositTxn2 = await crossChainMessenger.withdrawERC20(process.env.REACT_APP_L1_HYPR, process.env.REACT_APP_L2_HYPR , daiValue);;
-              var receiptDAI = await depositTxn2.wait()
-              if (receiptDAI) {
+              var receiptHYPR = await depositTxn2.wait()
+              if (receiptHYPR) {
                 setLoader(false);
                 setEthValue("")
               }
@@ -203,9 +203,9 @@ const Withdraw = () => {
       }
       setEthValue(e.target.value)
     }
-    if (sendToken == "DAI") {
-      if (dataDAI.data?.formatted < e.target.value) {
-        setErrorInput("Insufficient DAI balance.")
+    if (sendToken == "HYPR") {
+      if (dataHYPR.data?.formatted < e.target.value) {
+        setErrorInput("Insufficient HYPR balance.")
       } else {
         setErrorInput("")
       }
@@ -213,7 +213,7 @@ const Withdraw = () => {
     }
     if (sendToken == "USDT") {
       if (dataUSDT.data?.formatted < e.target.value) {
-        setErrorInput("Insufficient DAI balance.")
+        setErrorInput("Insufficient HYPR balance.")
       } else {
         setErrorInput("")
       }
@@ -238,9 +238,17 @@ const Withdraw = () => {
               <MdOutlineSecurity />
             </div>
             <div className='withdraw_title_content'>
-              <h3>Use the official bridge</h3>
-              <p>This usually takes 7 days</p>
-              <p>Bridge any token to Ethereum Mainnet</p>
+              <h3>Important instructions for Withdrawals</h3>
+              <p>OP Stack withdrawals usually take <strong>7 days</strong> to complete.</p>
+              <p>Please follow these instruction carefully:</p>
+              <br />
+              <p>1. Enter amount bellow and sign tx with Metamask</p>
+              <p>2. Go to "View Withdrawals" and find your tx (Up to 30 minutes later)</p>
+              <p>3. Once confirmed, press the "Prove" button</p>
+              <p>4. Wait for 7-day challenge period</p>
+              <p>5. After 7 days, press the "Claim" button to complete tx</p>
+              <br />
+              <p>Learn more about <a href="https://community.optimism.io/docs/developers/bridge/messaging/#understanding-the-challenge-period" target="_blank" style={{color:"white"}}>OP Stack withdrawals</a></p>
             </div>
           </div>
           <div className='deposit_price_wrap'>
@@ -254,16 +262,16 @@ const Withdraw = () => {
                   <Form.Control type='number' name="eth_value" value={ethValue} onChange={handleChange} placeholder="0" min="0" step="any" />
                   <Form.Select aria-label="Default select example" className='select_wrap' onChange={({ target }) => setSendToken(target.value)}>
                     <option>ETH</option>
-                    <option value="DAI">HYPR</option>
+                    <option value="HYPR">HYPR</option>
                   </Form.Select>
                 </div>
                 <div className='input_icn_wrap'>
-                  {sendToken == "ETH" ? <span className='input_icn'><Ethereum style={{ fontSize: '1.5rem' }} /></span> : <span className='input_icn'><Usdc style={{ fontSize: '1.5rem' }} /></span>}
+                  {sendToken == "ETH" ? <span className='input_icn'><Ethereum style={{ fontSize: '1.5rem' }} /></span> : <span className='input_icn'><Image src={toIcn} alt="To icn" fluid /></span>}
                 </div>
               </Form>
             </div>
             {errorInput && <small className='text-danger'>{errorInput}</small>}
-            {sendToken === "ETH" ? address && <p className='wallet_bal mt-2'>Balance: {Number(data?.formatted).toFixed(5)} ETH</p> : sendToken === "DAI" ? address && <p className='wallet_bal mt-2'>Balance: {Number(dataDAI.data?.formatted).toFixed(5)} DAI</p> : sendToken == "USDT" ? address && <p className='wallet_bal mt-2'>Balance: {Number(dataUSDT.data?.formatted).toFixed(5)} USDT</p> : <p className='wallet_bal mt-2'>Balance: {Number(dataUSDC.data?.formatted).toFixed(5)} USDC</p>}
+            {sendToken === "ETH" ? address && <p className='wallet_bal mt-2'>Balance: {Number(data?.formatted).toFixed(5)} ETH</p> : sendToken === "HYPR" ? address && <p className='wallet_bal mt-2'>Balance: {Number(dataHYPR.data?.formatted).toFixed(5)} HYPR</p> : sendToken == "USDT" ? address && <p className='wallet_bal mt-2'>Balance: {Number(dataUSDT.data?.formatted).toFixed(5)} USDT</p> : <p className='wallet_bal mt-2'>Balance: {Number(dataUSDC.data?.formatted).toFixed(5)} USDC</p>}
           </div>
           <div className='deposit_details_wrap'>
             <div className="deposit_details">
@@ -271,7 +279,7 @@ const Withdraw = () => {
               <h5><FaEthereum /> mainnet</h5>
             </div>
             <div className='withdraw_bal_sum'>
-              {sendToken == "ETH" ? <span className='input_icn'><Ethereum style={{ fontSize: '1.5rem' }} /></span> : sendToken == "DAI" ? <span className='input_icn'><Dai style={{ fontSize: '1.5rem' }} /></span> : sendToken == "USDT" ? <span className='input_icn'><Usdt style={{ fontSize: '1.5rem' }} /></span> : <span className='input_icn'><Usdc style={{ fontSize: '1.5rem' }} /></span>}
+              {sendToken == "ETH" ? <span className='input_icn'><Ethereum style={{ fontSize: '1.5rem' }} /></span> : sendToken == "HYPR" ? <span className='input_icn'><Image src={toIcn} alt="To icn" width="20" fluid /></span> : sendToken == "USDT" ? <span className='input_icn'><Usdt style={{ fontSize: '1.5rem' }} /></span> : <span className='input_icn'><Usdc style={{ fontSize: '1.5rem' }} /></span>}
               <p>You’ll receive: {ethValue ? ethValue : "0"} {sendToken}</p>
               <div></div>
               {/* <span className='input_title'>ETH</span> */}

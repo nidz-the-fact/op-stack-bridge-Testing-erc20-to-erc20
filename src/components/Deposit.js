@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import "../assets/style/deposit.scss";
 import { Form, Spinner, Image } from "react-bootstrap"
-import { Dai, Usdt,Usdc , Ethereum } from 'react-web3-icons';
+import { Usdt,Usdc , Ethereum } from 'react-web3-icons';
 import toIcn from "../assets/images/logo_circle.svg"
 import { IoMdWallet } from "react-icons/io"
 import { FaEthereum } from "react-icons/fa"
@@ -63,7 +63,7 @@ const Deposit = () => {
 
 
     const dataUSDT = useBalance({ address: address, token: process.env.REACT_APP_L1_USDT, watch: true, chainId: Number(process.env.REACT_APP_L1_CHAIN_ID) })
-    const dataDAI = useBalance({ address: address, token: process.env.REACT_APP_L1_HYPR, watch: true, chainId: Number(process.env.REACT_APP_L1_CHAIN_ID)  })
+    const dataHYPR = useBalance({ address: address, token: process.env.REACT_APP_L1_HYPR, watch: true, chainId: Number(process.env.REACT_APP_L1_CHAIN_ID)  })
     const dataUSDC = useBalance({ address: address, token: process.env.REACT_APP_L1_USDC, watch: true, chainId: Number(process.env.REACT_APP_L1_CHAIN_ID)  })
 
     const handleSwitch = () => {
@@ -131,14 +131,14 @@ const Deposit = () => {
                             setEthValue("")
                         }
                     }
-                    if (sendToken === "DAI") {
+                    if (sendToken === "HYPR") {
                         var daiValue = Web3.utils.toWei(ethValue, "ether")
                         setLoader(true);
                         var depositTxn2 = await crossChainMessenger.approveERC20(process.env.REACT_APP_L1_HYPR, process.env.REACT_APP_L2_HYPR, daiValue)
                         await depositTxn2.wait()
-                        var receiptDAI = await crossChainMessenger.depositERC20( process.env.REACT_APP_L1_HYPR, process.env.REACT_APP_L2_HYPR, daiValue)
-                        var getReceiptDAI = await receiptDAI.wait()
-                        if (getReceiptDAI) {
+                        var receiptHYPR = await crossChainMessenger.depositERC20( process.env.REACT_APP_L1_HYPR, process.env.REACT_APP_L2_HYPR, daiValue)
+                        var getReceiptHYPR = await receiptHYPR.wait()
+                        if (getReceiptHYPR) {
                             setLoader(false);
                             setEthValue("")
                         }
@@ -160,9 +160,9 @@ const Deposit = () => {
             }
             setEthValue(e.target.value)
         }
-        if (sendToken == 'DAI') {
-            if (dataDAI.data?.formatted < e.target.value) {
-                setErrorInput("Insufficient DAI balance.")
+        if (sendToken == 'HYPR') {
+            if (dataHYPR.data?.formatted < e.target.value) {
+                setErrorInput("Insufficient HYPR balance.")
             } else {
                 setErrorInput("")
             }
@@ -203,16 +203,16 @@ const Deposit = () => {
                                     <Form.Control type='number' value={ethValue} onChange={handleChange} placeholder="0" min="0" step="any" />
                                     <Form.Select aria-label="Default select example" className='select_wrap' onChange={({ target }) => setSendToken(target.value)}>
                                         <option>ETH</option>
-                                        <option value="DAI">HYPR</option>
+                                        <option value="HYPR">HYPR</option>
                                     </Form.Select>
                                 </div>
                                 <div className='input_icn_wrap'>
-                                    {sendToken == "ETH" ? <span className='input_icn'><Ethereum style={{ fontSize: '1.5rem' }}/></span> : sendToken == "DAI" ? <span className='input_icn'><Dai style={{ fontSize: '1.5rem' }}/></span> : sendToken == "USDT" ? <span className='input_icn'><Usdt style={{ fontSize: '1.5rem' }}/></span> : <span className='input_icn'><Usdc style={{ fontSize: '1.5rem' }}/></span>}
+                                    {sendToken == "ETH" ? <span className='input_icn'><Ethereum style={{ fontSize: '1.5rem' }}/></span> : sendToken == "HYPR" ? <span className='input_icn'><Image src={toIcn} alt="To icn" fluid /></span> : sendToken == "USDT" ? <span className='input_icn'><Usdt style={{ fontSize: '1.5rem' }}/></span> : <span className='input_icn'><Usdc style={{ fontSize: '1.5rem' }}/></span>}
                                 </div>
                             </Form>
                         </div>
                         {errorInput && <small className='text-danger'>{errorInput}</small>}
-                        {sendToken == 'ETH' ? address && <p className='wallet_bal mt-2'>Balance: {Number(data?.formatted).toFixed(5)} ETH</p> : sendToken == 'USDT' ? address && <p className='wallet_bal mt-2'>Balance: {Number(dataUSDT.data?.formatted).toFixed(5)} USDT</p> : sendToken == 'DAI' ?  address && <p className='wallet_bal mt-2'>Balance: {Number(dataDAI.data?.formatted).toFixed(5)} DAI</p> : address && <p className='wallet_bal mt-2'>Balance: {Number(dataUSDC.data?.formatted).toFixed(5)} USDC</p>}
+                        {sendToken == 'ETH' ? address && <p className='wallet_bal mt-2'>Balance: {Number(data?.formatted).toFixed(5)} ETH</p> : sendToken == 'USDT' ? address && <p className='wallet_bal mt-2'>Balance: {Number(dataUSDT.data?.formatted).toFixed(5)} USDT</p> : sendToken == 'HYPR' ?  address && <p className='wallet_bal mt-2'>Balance: {Number(dataHYPR.data?.formatted).toFixed(5)} HYPR</p> : address && <p className='wallet_bal mt-2'>Balance: {Number(dataUSDC.data?.formatted).toFixed(5)} USDC</p>}
 
                     </div>
                     <div className='deposit_details_wrap'>
@@ -221,7 +221,7 @@ const Deposit = () => {
                             <h5><Image src={toIcn} alt="To icn" fluid /> Hypr</h5>
                         </div>
                         <div className='deposit_inner_details'>
-                            {sendToken == "ETH" ? <span className='input_icn'> <Ethereum style={{ fontSize: '1.5rem' }}/></span> : sendToken == "DAI" ? <span className='input_icn'><Dai style={{ fontSize: '1.5rem' }}/></span> : sendToken == "USDT" ? <span className='input_icn'> <Usdt style={{ fontSize: '1.5rem' }}/></span> : <span className='input_icn'> <Usdc style={{ fontSize: '1.5rem' }}/></span> }  <p> You’ll receive: {ethValue ? ethValue : "0"} {sendToken}</p>
+                            {sendToken == "ETH" ? <span className='input_icn'> <Ethereum style={{ fontSize: '1.5rem' }}/></span> : sendToken == "HYPR" ? <span className='input_icn'><Image src={toIcn} alt="To icn" fluid /></span> : sendToken == "USDT" ? <span className='input_icn'> <Usdt style={{ fontSize: '1.5rem' }}/></span> : <span className='input_icn'> <Usdc style={{ fontSize: '1.5rem' }}/></span> }  <p> You’ll receive: {ethValue ? ethValue : "0"} {sendToken}</p>
                         </div>
                     </div>
                     <div className="deposit_btn_wrap">
