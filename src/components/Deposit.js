@@ -63,7 +63,7 @@ const Deposit = () => {
 
 
     const dataUSDT = useBalance({ address: address, token: process.env.REACT_APP_L1_USDT, watch: true, chainId: Number(process.env.REACT_APP_L1_CHAIN_ID) })
-    const dataDAI = useBalance({ address: address, token: process.env.REACT_APP_L1_DAI, watch: true, chainId: Number(process.env.REACT_APP_L1_CHAIN_ID)  })
+    const dataDAI = useBalance({ address: address, token: process.env.REACT_APP_L1_HYPR, watch: true, chainId: Number(process.env.REACT_APP_L1_CHAIN_ID)  })
     const dataUSDC = useBalance({ address: address, token: process.env.REACT_APP_L1_USDC, watch: true, chainId: Number(process.env.REACT_APP_L1_CHAIN_ID)  })
 
     const handleSwitch = () => {
@@ -229,9 +229,7 @@ const Deposit = () => {
                                     <Form.Control type='number' value={ethValue} onChange={handleChange} placeholder="0" min="0" step="any" />
                                     <Form.Select aria-label="Default select example" className='select_wrap' onChange={({ target }) => setSendToken(target.value)}>
                                         <option>ETH</option>
-                                        <option value="DAI">DAI</option>
-                                        <option value="USDC">USDC</option>
-                                        <option value="USDT">USDT</option>
+                                        <option value="DAI">HYPR</option>
                                     </Form.Select>
                                 </div>
                                 <div className='input_icn_wrap'>
