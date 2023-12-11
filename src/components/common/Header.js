@@ -41,7 +41,7 @@ const HeaderNew = () => {
         await disconnect()
     }
     useEffect(() => {
-        if (chain?.id == 90001 || chain?.id == 5) {
+        if (chain?.id == 60005 || chain?.id == 5 || chain?.id == 1206 || chain?.id == 1) {
             setNetwork(chain.name)
         }
         else {
