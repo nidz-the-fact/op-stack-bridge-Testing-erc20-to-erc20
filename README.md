@@ -14,7 +14,7 @@ yarn
 
 ## Running the service
 
-Copy `.env.example` into a new file named `.env`, then set the environment variables listed there.
+Copy `.example.env` into a new file named `.env`, then set the environment variables listed there.
 
 
 
