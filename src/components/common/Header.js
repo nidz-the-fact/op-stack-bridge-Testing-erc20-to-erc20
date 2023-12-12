@@ -41,8 +41,14 @@ const HeaderNew = () => {
         await disconnect()
     }
     useEffect(() => {
-        if (chain?.id == 60005 || chain?.id == 5 || chain?.id == 1206 || chain?.id == 1) {
-            setNetwork(chain.name)
+        if (chain?.id == 60005) {
+            setNetwork('Hypr Testnet')
+        } else if (chain?.id == 5) {
+            setNetwork('Ethereum Goerli')
+        } else if (chain?.id == 1206) {
+            setNetwork('Hypr Mainnet')
+        } else if (chain?.id == 1) {
+            setNetwork('Ethereum Mainnet')
         }
         else {
             setNetwork("Unsupported Network")

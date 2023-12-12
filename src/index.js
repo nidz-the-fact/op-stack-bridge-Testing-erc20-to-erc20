@@ -13,7 +13,7 @@ import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 export const RACE = {
     id: Number(process.env.REACT_APP_L2_CHAIN_ID),
-    name: "Hypr Mainnet",
+    name: "Hypr",
     network: "Hypr",
     iconUrl: "https://i.imgur.com/90fZHJQ.png",
     iconBackground: "#000000",
@@ -28,7 +28,7 @@ export const RACE = {
         },
     },
     blockExplorers: {
-        default: { name: "Hypr Mainnet Explorer", url: process.env.REACT_APP_L2_EXPLORER_URL }
+        default: { name: "Hypr Explorer", url: process.env.REACT_APP_L2_EXPLORER_URL }
     },
     testnet: true
 
