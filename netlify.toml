@@ -1,4 +1,4 @@
 [[redirects]]
   from = "/*"
-  to = "https://www.hypr.network"
-  status = 302
+  to = "/"
+  status = 200
