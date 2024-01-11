@@ -41,11 +41,11 @@ const HeaderNew = () => {
         await disconnect()
     }
     useEffect(() => {
-        if (chain?.id == 60005) {
+        if (chain?.id == 882) {
             setNetwork('Hypr Testnet')
-        } else if (chain?.id == 5) {
-            setNetwork('Ethereum Goerli')
-        } else if (chain?.id == 1206) {
+        } else if (chain?.id == 11155111) {
+            setNetwork('Ethereum Sepolia')
+        } else if (chain?.id == 881) {
             setNetwork('Hypr Mainnet')
         } else if (chain?.id == 1) {
             setNetwork('Ethereum Mainnet')
