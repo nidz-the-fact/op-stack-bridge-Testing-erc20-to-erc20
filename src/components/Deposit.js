@@ -195,7 +195,7 @@ const Deposit = () => {
                     <div className='deposit_price_wrap'>
                         <div className='deposit_price_title'>
                             <p>From</p>
-                            <h5><FaEthereum /> mainnet</h5>
+                            <h5><FaEthereum /> Ethereum</h5>
                         </div>
                         <div className='deposit_input_wrap'>
                             <Form>

@@ -276,7 +276,7 @@ const Withdraw = () => {
           <div className='deposit_details_wrap'>
             <div className="deposit_details">
               <p>To:</p>
-              <h5><FaEthereum /> mainnet</h5>
+              <h5><FaEthereum /> Ethereum</h5>
             </div>
             <div className='withdraw_bal_sum'>
               {sendToken == "ETH" ? <span className='input_icn'><Ethereum style={{ fontSize: '1.5rem' }} /></span> : sendToken == "HYPR" ? <span className='input_icn'><Image src={toIcn} alt="To icn" width="20" fluid /></span> : sendToken == "USDT" ? <span className='input_icn'><Usdt style={{ fontSize: '1.5rem' }} /></span> : <span className='input_icn'><Usdc style={{ fontSize: '1.5rem' }} /></span>}
