@@ -8,7 +8,7 @@ import { store } from './store'
 import { Provider } from 'react-redux'
 import { WagmiConfig, createConfig, createStorage } from 'wagmi'
 import { configureChains } from '@wagmi/core'
-import { mainnet } from '@wagmi/core/chains'
+import { sepolia } from '@wagmi/core/chains'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 export const RACE = {
@@ -35,7 +35,7 @@ export const RACE = {
 }
 
 const { chains, publicClient } = configureChains(
-    [mainnet, RACE],
+    [sepolia, RACE],
     [
         jsonRpcProvider({
             rpc: chain => ({ http: chain.rpcUrls.default.http[0] })
