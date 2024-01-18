@@ -8,9 +8,16 @@ import { store } from './store'
 import { Provider } from 'react-redux'
 import { WagmiConfig, createConfig, createStorage } from 'wagmi'
 import { configureChains } from '@wagmi/core'
-import { sepolia } from '@wagmi/core/chains'
+import { sepolia, mainnet } from '@wagmi/core/chains'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
+
+var currentChain = sepolia;
+
+if (process.env.REACT_APP_L2_CHAIN_ID === 1) {
+    currentChain = mainnet;
+}
+
 export const RACE = {
     id: Number(process.env.REACT_APP_L2_CHAIN_ID),
     name: "Hypr",
@@ -35,7 +42,7 @@ export const RACE = {
 }
 
 const { chains, publicClient } = configureChains(
-    [sepolia, RACE],
+    [currentChain, RACE],
     [
         jsonRpcProvider({
             rpc: chain => ({ http: chain.rpcUrls.default.http[0] })
