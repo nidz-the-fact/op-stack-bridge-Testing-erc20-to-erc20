@@ -14,7 +14,7 @@ import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 
 var currentChain = sepolia;
 
-if (process.env.REACT_APP_L1_CHAIN_ID === 1) {
+if (Number(process.env.REACT_APP_L1_CHAIN_ID) === 1) {
     currentChain = mainnet;
 }
 
