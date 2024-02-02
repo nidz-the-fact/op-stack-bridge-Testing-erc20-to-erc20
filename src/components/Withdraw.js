@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import "../assets/style/deposit.scss";
 import "../assets/style/withdraw.scss";
 import { Form, Image, Spinner } from "react-bootstrap";
-import { Usdt, Usdc, Ethereum } from 'react-web3-icons';
+import { Usdt, Usdc, Dai, Ethereum } from 'react-web3-icons';
 import { MdOutlineSecurity } from "react-icons/md"
 import { FaEthereum } from "react-icons/fa"
 import Web3 from 'web3';
@@ -95,6 +95,7 @@ const Withdraw = () => {
   const dataFLOKI = useBalance({ address: address, chainId: Number(process.env.REACT_APP_L2_CHAIN_ID), token: process.env.REACT_APP_L2_FLOKI, watch: true });
   const dataMC = useBalance({ address: address, chainId: Number(process.env.REACT_APP_L2_CHAIN_ID), token: process.env.REACT_APP_L2_MC, watch: true });
   const dataUSDC = useBalance({ address: address, chainId: Number(process.env.REACT_APP_L2_CHAIN_ID), token: process.env.REACT_APP_L2_USDC, watch: true });
+  const dataDAI = useBalance({ address: address, chainId: Number(process.env.REACT_APP_L2_CHAIN_ID), token: process.env.REACT_APP_L2_DAI, watch: true });
 
   ////========================================================== WITHDRAW =======================================================================
 
@@ -178,6 +179,16 @@ const Withdraw = () => {
               var depositTxn2 = await crossChainMessenger.withdrawERC20(process.env.REACT_APP_L1_USDC, process.env.REACT_APP_L2_USDC , assetValue);
               var receiptUSDC = await depositTxn2.wait()
               if (receiptUSDC) {
+                setLoader(false);
+                setEthValue("")
+              }
+            }
+            if (sendToken == "DAI") {
+              var assetValue = Web3.utils.toWei(ethValue, "ether")
+              setLoader(true);
+              var depositTxn2 = await crossChainMessenger.withdrawERC20(process.env.REACT_APP_L1_DAI, process.env.REACT_APP_L2_DAI , assetValue);
+              var receiptDAI = await depositTxn2.wait()
+              if (receiptDAI) {
                 setLoader(false);
                 setEthValue("")
               }
@@ -287,6 +298,14 @@ const Withdraw = () => {
       }
       setEthValue(e.target.value)
     }
+    if (sendToken == "DAI") {
+      if (dataUSDC.data?.formatted < e.target.value) {
+        setErrorInput("Insufficient DAI balance.")
+      } else {
+        setErrorInput("")
+      }
+      setEthValue(e.target.value)
+    }
   }
   return (
     <>
@@ -322,9 +341,10 @@ const Withdraw = () => {
                   <Form.Control type='number' name="eth_value" value={ethValue} onChange={handleChange} placeholder="0" min="0" step="any" />
                   <Form.Select aria-label="Default select example" className='select_wrap' onChange={({ target }) => setSendToken(target.value)}>
                     <option>ETH</option>
+                    <option>HYPR</option>
                     <option>USDT</option>
                     <option>USDC</option>
-                    <option>HYPR</option>
+                    <option>DAI</option>
                     <option>FLOKI</option>
                     <option>MC</option>
                   </Form.Select>
@@ -333,6 +353,7 @@ const Withdraw = () => {
                   {sendToken === "ETH" ? <span className='input_icn'><Ethereum style={{ fontSize: '1.5rem' }} /></span> : 
                   sendToken === "USDT" ? <span className='input_icn'><Usdt style={{ fontSize: '1.5rem' }} /></span> : 
                   sendToken === "USDC" ? <span className='input_icn'><Usdc style={{ fontSize: '1.5rem' }} /></span> : 
+                  sendToken === "DAI" ? <span className='input_icn'><Dai style={{ fontSize: '1.5rem' }} /></span> : 
                   sendToken === "HYPR" ? <span className='input_icn'><Image src={hyprIcn} style={{ width: '20px' }} alt="To icn" fluid /></span> : 
                   sendToken === "FLOKI" ? <span className='input_icn'><Image src={flokiIcn} style={{ width: '20px' }} alt="To icn" fluid /></span> : 
                   sendToken === "MC" ? <span className='input_icn'><Image src={mcIcn} style={{ width: '20px' }} alt="To icn" fluid /></span> : 
@@ -344,6 +365,7 @@ const Withdraw = () => {
             {sendToken === "ETH" ? address && <p className='wallet_bal mt-2'>Balance: {Number(data?.formatted).toFixed(5)} ETH</p> : 
             sendToken == "USDT" ? address && <p className='wallet_bal mt-2'>Balance: {Number(dataUSDT.data?.formatted).toFixed(5)} USDT</p> : 
             sendToken == "USDC" ? address && <p className='wallet_bal mt-2'>Balance: {Number(dataUSDC.data?.formatted).toFixed(5)} USDC</p> : 
+            sendToken == "DAI" ? address && <p className='wallet_bal mt-2'>Balance: {Number(dataDAI.data?.formatted).toFixed(5)} DAI</p> : 
             sendToken === "HYPR" ? address && <p className='wallet_bal mt-2'>Balance: {Number(dataHYPR.data?.formatted).toFixed(5)} HYPR</p> : 
             sendToken === "FLOKI" ? address && <p className='wallet_bal mt-2'>Balance: {Number(dataFLOKI.data?.formatted).toFixed(5)} FLOKI</p> : 
             sendToken === "MC" ? address && <p className='wallet_bal mt-2'>Balance: {Number(dataMC.data?.formatted).toFixed(5)} MC</p> : 
@@ -358,6 +380,7 @@ const Withdraw = () => {
               {sendToken == "ETH" ? <span className='input_icn'><Ethereum style={{ fontSize: '1.5rem' }} /></span> : 
               sendToken == "USDT" ? <span className='input_icn'><Usdt style={{ fontSize: '1.5rem' }} /></span> : 
               sendToken == "USDC" ? <span className='input_icn'><Usdc style={{ fontSize: '1.5rem' }} /></span> : 
+              sendToken == "DAI" ? <span className='input_icn'><Dai style={{ fontSize: '1.5rem' }} /></span> : 
               sendToken == "HYPR" ? <span className='input_icn'><Image src={hyprIcn} alt="To icn" width="20" fluid /></span> : 
               sendToken == "FLOKI" ? <span className='input_icn'><Image src={flokiIcn} alt="To icn" width="20" fluid /></span> : 
               sendToken == "MC" ? <span className='input_icn'><Image src={mcIcn} alt="To icn" width="20" fluid /></span> : 
