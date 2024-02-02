@@ -4,6 +4,7 @@ import { Form, Spinner, Image } from "react-bootstrap"
 import { Usdt,Usdc , Ethereum } from 'react-web3-icons';
 import hyprIcn from "../assets/images/logo_circle.svg"
 import flokiIcn from "../assets/images/floki.png"
+import mcIcn from "../assets/images/mc.svg"
 import { IoMdWallet } from "react-icons/io"
 import { FaEthereum } from "react-icons/fa"
 import { useAccount, useConnect, useNetwork, useSwitchNetwork, useBalance, useToken } from 'wagmi'
@@ -67,6 +68,7 @@ const Deposit = () => {
     const dataHYPR = useBalance({ address: address, token: process.env.REACT_APP_L1_HYPR, watch: true, chainId: Number(process.env.REACT_APP_L1_CHAIN_ID)  })
     const dataUSDC = useBalance({ address: address, token: process.env.REACT_APP_L1_USDC, watch: true, chainId: Number(process.env.REACT_APP_L1_CHAIN_ID)  })
     const dataFLOKI = useBalance({ address: address, token: process.env.REACT_APP_L1_FLOKI, watch: true, chainId: Number(process.env.REACT_APP_L1_CHAIN_ID)  })
+    const dataMC = useBalance({ address: address, token: process.env.REACT_APP_L1_MC, watch: true, chainId: Number(process.env.REACT_APP_L1_CHAIN_ID)  })
 
     const handleSwitch = () => {
         switchNetwork(process.env.REACT_APP_L1_CHAIN_ID)
@@ -157,6 +159,18 @@ const Deposit = () => {
                             setEthValue("")
                         }
                     }
+                    if (sendToken === "MC") {
+                        var daiValue = Web3.utils.toWei(ethValue, "ether")
+                        setLoader(true);
+                        var depositTxn2 = await crossChainMessenger.approveERC20(process.env.REACT_APP_L1_MC, process.env.REACT_APP_L2_MC, daiValue)
+                        await depositTxn2.wait()
+                        var receiptMC = await crossChainMessenger.depositERC20( process.env.REACT_APP_L1_MC, process.env.REACT_APP_L2_MC, daiValue)
+                        var getReceiptMC = await receiptMC.wait()
+                        if (getReceiptMC) {
+                            setLoader(false);
+                            setEthValue("")
+                        }
+                    }
                 }
             }
         } catch (error) {
@@ -185,6 +199,14 @@ const Deposit = () => {
         if (sendToken == 'FLOKI') {
             if (dataFLOKI.data?.formatted < e.target.value) {
                 setErrorInput("Insufficient FLOKI balance.")
+            } else {
+                setErrorInput("")
+            }
+            setEthValue(e.target.value)
+        }
+        if (sendToken == 'MC') {
+            if (dataMC.data?.formatted < e.target.value) {
+                setErrorInput("Insufficient MC balance.")
             } else {
                 setErrorInput("")
             }
@@ -227,12 +249,14 @@ const Deposit = () => {
                                         <option>ETH</option>
                                         <option value="HYPR">HYPR</option>
                                         <option value="FLOKI">FLOKI</option>
+                                        <option value="MC">MC</option>
                                     </Form.Select>
                                 </div>
                                 <div className='input_icn_wrap'>
                                     {sendToken == "ETH" ? <span className='input_icn'><Ethereum style={{ fontSize: '1.5rem' }}/></span> : 
                                     sendToken == "HYPR" ? <span className='input_icn'><Image src={hyprIcn} alt="To icn" fluid /></span> : 
                                     sendToken == "FLOKI" ? <span className='input_icn'><Image src={flokiIcn} alt="To icn" fluid /></span> : 
+                                    sendToken == "MC" ? <span className='input_icn'><Image src={mcIcn} alt="To icn" fluid /></span> : 
                                     sendToken == "USDT" ? <span className='input_icn'><Usdt style={{ fontSize: '1.5rem' }}/></span> : 
                                     <span className='input_icn'><Usdc style={{ fontSize: '1.5rem' }}/></span>}
                                 </div>
@@ -242,6 +266,7 @@ const Deposit = () => {
                         {sendToken == 'ETH' ? address && <p className='wallet_bal mt-2'>Balance: {Number(data?.formatted).toFixed(5)} ETH</p> : 
                         sendToken == 'USDT' ? address && <p className='wallet_bal mt-2'>Balance: {Number(dataUSDT.data?.formatted).toFixed(5)} USDT</p> : 
                         sendToken == 'FLOKI' ? address && <p className='wallet_bal mt-2'>Balance: {Number(dataFLOKI.data?.formatted).toFixed(5)} FLOKI</p> : 
+                        sendToken == 'MC' ? address && <p className='wallet_bal mt-2'>Balance: {Number(dataMC.data?.formatted).toFixed(5)} MC</p> : 
                         sendToken == 'HYPR' ?  address && <p className='wallet_bal mt-2'>Balance: {Number(dataHYPR.data?.formatted).toFixed(5)} HYPR</p> : 
                         address && <p className='wallet_bal mt-2'>Balance: {Number(dataUSDC.data?.formatted).toFixed(5)} USDC</p>}
 
@@ -255,6 +280,7 @@ const Deposit = () => {
                             {sendToken == "ETH" ? <span className='input_icn'> <Ethereum style={{ fontSize: '1.5rem' }}/></span> : 
                             sendToken == "HYPR" ? <span className='input_icn'><Image src={hyprIcn} alt="To icn" fluid /></span> : 
                             sendToken == "FLOKI" ? <span className='input_icn'><Image src={flokiIcn} alt="To icn" fluid /></span> : 
+                            sendToken == "MC" ? <span className='input_icn'><Image src={mcIcn} alt="To icn" fluid /></span> : 
                             sendToken == "USDT" ? <span className='input_icn'> <Usdt style={{ fontSize: '1.5rem' }}/></span> : 
                             <span className='input_icn'> <Usdc style={{ fontSize: '1.5rem' }}/></span> }  
                             <p> You’ll receive: {ethValue ? ethValue : "0"} {sendToken}</p>
