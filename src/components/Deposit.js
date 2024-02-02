@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import "../assets/style/deposit.scss";
 import { Form, Spinner, Image } from "react-bootstrap"
 import { Usdt,Usdc , Ethereum } from 'react-web3-icons';
-import hyprIcn from "../assets/images/logo_circle.svg"
+import hyprIcn from "../assets/images/hypr.svg"
 import flokiIcn from "../assets/images/floki.png"
 import mcIcn from "../assets/images/mc.svg"
 import { IoMdWallet } from "react-icons/io"
@@ -135,6 +135,18 @@ const Deposit = () => {
                             setEthValue("")
                         }
                     }
+                    if (sendToken === "USDT") {
+                        var daiValue = Web3.utils.toWei(ethValue, "ether")
+                        setLoader(true);
+                        var depositTxn2 = await crossChainMessenger.approveERC20(process.env.REACT_APP_L1_USDT, process.env.REACT_APP_L2_USDT, daiValue)
+                        await depositTxn2.wait()
+                        var receiptUSDT = await crossChainMessenger.depositERC20( process.env.REACT_APP_L1_USDT, process.env.REACT_APP_L2_USDT, daiValue)
+                        var getReceiptUSDT = await receiptUSDT.wait()
+                        if (getReceiptUSDT) {
+                            setLoader(false);
+                            setEthValue("")
+                        }
+                    }
                     if (sendToken === "HYPR") {
                         var daiValue = Web3.utils.toWei(ethValue, "ether")
                         setLoader(true);
@@ -247,17 +259,18 @@ const Deposit = () => {
                                     <Form.Control type='number' value={ethValue} onChange={handleChange} placeholder="0" min="0" step="any" />
                                     <Form.Select aria-label="Default select example" className='select_wrap' onChange={({ target }) => setSendToken(target.value)}>
                                         <option>ETH</option>
-                                        <option value="HYPR">HYPR</option>
-                                        <option value="FLOKI">FLOKI</option>
-                                        <option value="MC">MC</option>
+                                        <option>USDT</option>
+                                        <option>HYPR</option>
+                                        <option>FLOKI</option>
+                                        <option>MC</option>
                                     </Form.Select>
                                 </div>
                                 <div className='input_icn_wrap'>
                                     {sendToken == "ETH" ? <span className='input_icn'><Ethereum style={{ fontSize: '1.5rem' }}/></span> : 
-                                    sendToken == "HYPR" ? <span className='input_icn'><Image src={hyprIcn} alt="To icn" fluid /></span> : 
-                                    sendToken == "FLOKI" ? <span className='input_icn'><Image src={flokiIcn} alt="To icn" fluid /></span> : 
-                                    sendToken == "MC" ? <span className='input_icn'><Image src={mcIcn} alt="To icn" fluid /></span> : 
                                     sendToken == "USDT" ? <span className='input_icn'><Usdt style={{ fontSize: '1.5rem' }}/></span> : 
+                                    sendToken == "HYPR" ? <span className='input_icn'><Image src={hyprIcn} style={{ width: '20px' }} alt="To icn" fluid /></span> : 
+                                    sendToken == "FLOKI" ? <span className='input_icn'><Image src={flokiIcn} style={{ width: '20px' }} alt="To icn" fluid /></span> : 
+                                    sendToken == "MC" ? <span className='input_icn'><Image src={mcIcn} style={{ width: '20px' }} alt="To icn" fluid /></span> : 
                                     <span className='input_icn'><Usdc style={{ fontSize: '1.5rem' }}/></span>}
                                 </div>
                             </Form>
@@ -278,10 +291,10 @@ const Deposit = () => {
                         </div>
                         <div className='deposit_inner_details'>
                             {sendToken == "ETH" ? <span className='input_icn'> <Ethereum style={{ fontSize: '1.5rem' }}/></span> : 
-                            sendToken == "HYPR" ? <span className='input_icn'><Image src={hyprIcn} alt="To icn" fluid /></span> : 
-                            sendToken == "FLOKI" ? <span className='input_icn'><Image src={flokiIcn} alt="To icn" fluid /></span> : 
-                            sendToken == "MC" ? <span className='input_icn'><Image src={mcIcn} alt="To icn" fluid /></span> : 
                             sendToken == "USDT" ? <span className='input_icn'> <Usdt style={{ fontSize: '1.5rem' }}/></span> : 
+                            sendToken == "HYPR" ? <span className='input_icn'><Image src={hyprIcn} style={{ width: '20px' }} alt="To icn" fluid /></span> : 
+                            sendToken == "FLOKI" ? <span className='input_icn'><Image src={flokiIcn} style={{ width: '20px' }} alt="To icn" fluid /></span> : 
+                            sendToken == "MC" ? <span className='input_icn'><Image src={mcIcn} style={{ width: '20px' }} alt="To icn" fluid /></span> : 
                             <span className='input_icn'> <Usdc style={{ fontSize: '1.5rem' }}/></span> }  
                             <p> You’ll receive: {ethValue ? ethValue : "0"} {sendToken}</p>
                         </div>
