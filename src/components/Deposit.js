@@ -136,23 +136,35 @@ const Deposit = () => {
                         }
                     }
                     if (sendToken === "USDT") {
-                        var daiValue = Web3.utils.toWei(ethValue, "ether")
+                        var assetValue = Web3.utils.toWei(ethValue, "ether")
                         setLoader(true);
-                        var depositTxn2 = await crossChainMessenger.approveERC20(process.env.REACT_APP_L1_USDT, process.env.REACT_APP_L2_USDT, daiValue)
+                        var depositTxn2 = await crossChainMessenger.approveERC20(process.env.REACT_APP_L1_USDT, process.env.REACT_APP_L2_USDT, assetValue)
                         await depositTxn2.wait()
-                        var receiptUSDT = await crossChainMessenger.depositERC20( process.env.REACT_APP_L1_USDT, process.env.REACT_APP_L2_USDT, daiValue)
+                        var receiptUSDT = await crossChainMessenger.depositERC20( process.env.REACT_APP_L1_USDT, process.env.REACT_APP_L2_USDT, assetValue)
                         var getReceiptUSDT = await receiptUSDT.wait()
                         if (getReceiptUSDT) {
                             setLoader(false);
                             setEthValue("")
                         }
                     }
-                    if (sendToken === "HYPR") {
-                        var daiValue = Web3.utils.toWei(ethValue, "ether")
+                    if (sendToken === "USDC") {
+                        var assetValue = Web3.utils.toWei(ethValue, "ether")
                         setLoader(true);
-                        var depositTxn2 = await crossChainMessenger.approveERC20(process.env.REACT_APP_L1_HYPR, process.env.REACT_APP_L2_HYPR, daiValue)
+                        var depositTxn2 = await crossChainMessenger.approveERC20(process.env.REACT_APP_L1_USDC, process.env.REACT_APP_L2_USDC, assetValue)
                         await depositTxn2.wait()
-                        var receiptHYPR = await crossChainMessenger.depositERC20( process.env.REACT_APP_L1_HYPR, process.env.REACT_APP_L2_HYPR, daiValue)
+                        var receiptUSDC = await crossChainMessenger.depositERC20( process.env.REACT_APP_L1_USDC, process.env.REACT_APP_L2_USDC, assetValue)
+                        var getReceiptUSDC = await receiptUSDC.wait()
+                        if (getReceiptUSDC) {
+                            setLoader(false);
+                            setEthValue("")
+                        }
+                    }
+                    if (sendToken === "HYPR") {
+                        var assetValue = Web3.utils.toWei(ethValue, "ether")
+                        setLoader(true);
+                        var depositTxn2 = await crossChainMessenger.approveERC20(process.env.REACT_APP_L1_HYPR, process.env.REACT_APP_L2_HYPR, assetValue)
+                        await depositTxn2.wait()
+                        var receiptHYPR = await crossChainMessenger.depositERC20( process.env.REACT_APP_L1_HYPR, process.env.REACT_APP_L2_HYPR, assetValue)
                         var getReceiptHYPR = await receiptHYPR.wait()
                         if (getReceiptHYPR) {
                             setLoader(false);
@@ -160,11 +172,11 @@ const Deposit = () => {
                         }
                     }
                     if (sendToken === "FLOKI") {
-                        var daiValue = Web3.utils.toWei(ethValue, "ether")
+                        var assetValue = Web3.utils.toWei(ethValue, "ether")
                         setLoader(true);
-                        var depositTxn2 = await crossChainMessenger.approveERC20(process.env.REACT_APP_L1_FLOKI, process.env.REACT_APP_L2_FLOKI, daiValue)
+                        var depositTxn2 = await crossChainMessenger.approveERC20(process.env.REACT_APP_L1_FLOKI, process.env.REACT_APP_L2_FLOKI, assetValue)
                         await depositTxn2.wait()
-                        var receiptFLOKI = await crossChainMessenger.depositERC20( process.env.REACT_APP_L1_FLOKI, process.env.REACT_APP_L2_FLOKI, daiValue)
+                        var receiptFLOKI = await crossChainMessenger.depositERC20( process.env.REACT_APP_L1_FLOKI, process.env.REACT_APP_L2_FLOKI, assetValue)
                         var getReceiptFLOKI = await receiptFLOKI.wait()
                         if (getReceiptFLOKI) {
                             setLoader(false);
@@ -172,11 +184,11 @@ const Deposit = () => {
                         }
                     }
                     if (sendToken === "MC") {
-                        var daiValue = Web3.utils.toWei(ethValue, "ether")
+                        var assetValue = Web3.utils.toWei(ethValue, "ether")
                         setLoader(true);
-                        var depositTxn2 = await crossChainMessenger.approveERC20(process.env.REACT_APP_L1_MC, process.env.REACT_APP_L2_MC, daiValue)
+                        var depositTxn2 = await crossChainMessenger.approveERC20(process.env.REACT_APP_L1_MC, process.env.REACT_APP_L2_MC, assetValue)
                         await depositTxn2.wait()
-                        var receiptMC = await crossChainMessenger.depositERC20( process.env.REACT_APP_L1_MC, process.env.REACT_APP_L2_MC, daiValue)
+                        var receiptMC = await crossChainMessenger.depositERC20( process.env.REACT_APP_L1_MC, process.env.REACT_APP_L2_MC, assetValue)
                         var getReceiptMC = await receiptMC.wait()
                         if (getReceiptMC) {
                             setLoader(false);
@@ -260,6 +272,7 @@ const Deposit = () => {
                                     <Form.Select aria-label="Default select example" className='select_wrap' onChange={({ target }) => setSendToken(target.value)}>
                                         <option>ETH</option>
                                         <option>USDT</option>
+                                        <option>USDC</option>
                                         <option>HYPR</option>
                                         <option>FLOKI</option>
                                         <option>MC</option>
@@ -268,6 +281,7 @@ const Deposit = () => {
                                 <div className='input_icn_wrap'>
                                     {sendToken == "ETH" ? <span className='input_icn'><Ethereum style={{ fontSize: '1.5rem' }}/></span> : 
                                     sendToken == "USDT" ? <span className='input_icn'><Usdt style={{ fontSize: '1.5rem' }}/></span> : 
+                                    sendToken == "USDC" ? <span className='input_icn'><Usdc style={{ fontSize: '1.5rem' }}/></span> : 
                                     sendToken == "HYPR" ? <span className='input_icn'><Image src={hyprIcn} style={{ width: '20px' }} alt="To icn" fluid /></span> : 
                                     sendToken == "FLOKI" ? <span className='input_icn'><Image src={flokiIcn} style={{ width: '20px' }} alt="To icn" fluid /></span> : 
                                     sendToken == "MC" ? <span className='input_icn'><Image src={mcIcn} style={{ width: '20px' }} alt="To icn" fluid /></span> : 
@@ -278,6 +292,7 @@ const Deposit = () => {
                         {errorInput && <small className='text-danger'>{errorInput}</small>}
                         {sendToken == 'ETH' ? address && <p className='wallet_bal mt-2'>Balance: {Number(data?.formatted).toFixed(5)} ETH</p> : 
                         sendToken == 'USDT' ? address && <p className='wallet_bal mt-2'>Balance: {Number(dataUSDT.data?.formatted).toFixed(5)} USDT</p> : 
+                        sendToken == 'USDC' ? address && <p className='wallet_bal mt-2'>Balance: {Number(dataUSDC.data?.formatted).toFixed(5)} USDC</p> : 
                         sendToken == 'FLOKI' ? address && <p className='wallet_bal mt-2'>Balance: {Number(dataFLOKI.data?.formatted).toFixed(5)} FLOKI</p> : 
                         sendToken == 'MC' ? address && <p className='wallet_bal mt-2'>Balance: {Number(dataMC.data?.formatted).toFixed(5)} MC</p> : 
                         sendToken == 'HYPR' ?  address && <p className='wallet_bal mt-2'>Balance: {Number(dataHYPR.data?.formatted).toFixed(5)} HYPR</p> : 
@@ -292,6 +307,7 @@ const Deposit = () => {
                         <div className='deposit_inner_details'>
                             {sendToken == "ETH" ? <span className='input_icn'> <Ethereum style={{ fontSize: '1.5rem' }}/></span> : 
                             sendToken == "USDT" ? <span className='input_icn'> <Usdt style={{ fontSize: '1.5rem' }}/></span> : 
+                            sendToken == "USDC" ? <span className='input_icn'> <Usdc style={{ fontSize: '1.5rem' }}/></span> : 
                             sendToken == "HYPR" ? <span className='input_icn'><Image src={hyprIcn} style={{ width: '20px' }} alt="To icn" fluid /></span> : 
                             sendToken == "FLOKI" ? <span className='input_icn'><Image src={flokiIcn} style={{ width: '20px' }} alt="To icn" fluid /></span> : 
                             sendToken == "MC" ? <span className='input_icn'><Image src={mcIcn} style={{ width: '20px' }} alt="To icn" fluid /></span> : 
