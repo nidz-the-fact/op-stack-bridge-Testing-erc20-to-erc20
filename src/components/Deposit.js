@@ -5,6 +5,7 @@ import { Usdt, Usdc , Ethereum, Dai } from 'react-web3-icons';
 import hyprIcn from "../assets/images/hypr.svg"
 import flokiIcn from "../assets/images/floki.png"
 import mcIcn from "../assets/images/mc.svg"
+import yggIcn from "../assets/images/ygg.svg"
 import { IoMdWallet } from "react-icons/io"
 import { FaEthereum } from "react-icons/fa"
 import { useAccount, useConnect, useNetwork, useSwitchNetwork, useBalance, useToken } from 'wagmi'
@@ -69,6 +70,7 @@ const Deposit = () => {
     const dataUSDC = useBalance({ address: address, token: process.env.REACT_APP_L1_USDC, watch: true, chainId: Number(process.env.REACT_APP_L1_CHAIN_ID)  })
     const dataDAI = useBalance({ address: address, token: process.env.REACT_APP_L1_DAI, watch: true, chainId: Number(process.env.REACT_APP_L1_CHAIN_ID)  })
     const dataFLOKI = useBalance({ address: address, token: process.env.REACT_APP_L1_FLOKI, watch: true, chainId: Number(process.env.REACT_APP_L1_CHAIN_ID)  })
+    const dataYGG = useBalance({ address: address, token: process.env.REACT_APP_L1_YGG, watch: true, chainId: Number(process.env.REACT_APP_L1_CHAIN_ID)  })
     const dataMC = useBalance({ address: address, token: process.env.REACT_APP_L1_MC, watch: true, chainId: Number(process.env.REACT_APP_L1_CHAIN_ID)  })
 
     const handleSwitch = () => {
@@ -196,6 +198,18 @@ const Deposit = () => {
                             setEthValue("")
                         }
                     }
+                    if (sendToken === "YGG") {
+                        var assetValue = Web3.utils.toWei(ethValue, "ether")
+                        setLoader(true);
+                        var depositTxn2 = await crossChainMessenger.approveERC20(process.env.REACT_APP_L1_YGG, process.env.REACT_APP_L2_YGG, assetValue)
+                        await depositTxn2.wait()
+                        var receiptYGG = await crossChainMessenger.depositERC20( process.env.REACT_APP_L1_YGG, process.env.REACT_APP_L2_YGG, assetValue)
+                        var getReceiptYGG = await receiptYGG.wait()
+                        if (getReceiptYGG) {
+                            setLoader(false);
+                            setEthValue("")
+                        }
+                    }
                     if (sendToken === "MC") {
                         var assetValue = Web3.utils.toWei(ethValue, "ether")
                         setLoader(true);
@@ -236,6 +250,14 @@ const Deposit = () => {
         if (sendToken == 'FLOKI') {
             if (dataFLOKI.data?.formatted < e.target.value) {
                 setErrorInput("Insufficient FLOKI balance.")
+            } else {
+                setErrorInput("")
+            }
+            setEthValue(e.target.value)
+        }
+        if (sendToken == 'YGG') {
+            if (dataYGG.data?.formatted < e.target.value) {
+                setErrorInput("Insufficient YGG balance.")
             } else {
                 setErrorInput("")
             }
@@ -298,6 +320,7 @@ const Deposit = () => {
                                         <option>DAI</option>
                                         <option>FLOKI</option>
                                         <option>MC</option>
+                                        <option>YGG</option>
                                     </Form.Select>
                                 </div>
                                 <div className='input_icn_wrap'>
@@ -307,6 +330,7 @@ const Deposit = () => {
                                     sendToken == "DAI" ? <span className='input_icn'><Dai style={{ fontSize: '1.5rem' }}/></span> : 
                                     sendToken == "HYPR" ? <span className='input_icn'><Image src={hyprIcn} style={{ width: '20px' }} alt="To icn" fluid /></span> : 
                                     sendToken == "FLOKI" ? <span className='input_icn'><Image src={flokiIcn} style={{ width: '20px' }} alt="To icn" fluid /></span> : 
+                                    sendToken == "YGG" ? <span className='input_icn'><Image src={yggIcn} style={{ width: '20px' }} alt="To icn" fluid /></span> : 
                                     sendToken == "MC" ? <span className='input_icn'><Image src={mcIcn} style={{ width: '20px' }} alt="To icn" fluid /></span> : 
                                     <span className='input_icn'><Usdc style={{ fontSize: '1.5rem' }}/></span>}
                                 </div>
@@ -318,6 +342,7 @@ const Deposit = () => {
                         sendToken == 'USDC' ? address && <p className='wallet_bal mt-2'>Balance: {Number(dataUSDC.data?.formatted).toFixed(5)} USDC</p> : 
                         sendToken == 'DAI' ? address && <p className='wallet_bal mt-2'>Balance: {Number(dataDAI.data?.formatted).toFixed(5)} DAI</p> : 
                         sendToken == 'FLOKI' ? address && <p className='wallet_bal mt-2'>Balance: {Number(dataFLOKI.data?.formatted).toFixed(5)} FLOKI</p> : 
+                        sendToken == 'YGG' ? address && <p className='wallet_bal mt-2'>Balance: {Number(dataYGG.data?.formatted).toFixed(5)} YGG</p> : 
                         sendToken == 'MC' ? address && <p className='wallet_bal mt-2'>Balance: {Number(dataMC.data?.formatted).toFixed(5)} MC</p> : 
                         sendToken == 'HYPR' ?  address && <p className='wallet_bal mt-2'>Balance: {Number(dataHYPR.data?.formatted).toFixed(5)} HYPR</p> : 
                         address && <p className='wallet_bal mt-2'>Balance: {Number(dataUSDC.data?.formatted).toFixed(5)} USDC</p>}
@@ -335,6 +360,7 @@ const Deposit = () => {
                             sendToken == "DAI" ? <span className='input_icn'> <Dai style={{ fontSize: '1.5rem' }}/></span> : 
                             sendToken == "HYPR" ? <span className='input_icn'><Image src={hyprIcn} style={{ width: '20px' }} alt="To icn" fluid /></span> : 
                             sendToken == "FLOKI" ? <span className='input_icn'><Image src={flokiIcn} style={{ width: '20px' }} alt="To icn" fluid /></span> : 
+                            sendToken == "YGG" ? <span className='input_icn'><Image src={yggIcn} style={{ width: '20px' }} alt="To icn" fluid /></span> : 
                             sendToken == "MC" ? <span className='input_icn'><Image src={mcIcn} style={{ width: '20px' }} alt="To icn" fluid /></span> : 
                             <span className='input_icn'> <Usdc style={{ fontSize: '1.5rem' }}/></span> }  
                             <p> You’ll receive: {ethValue ? ethValue : "0"} {sendToken}</p>
