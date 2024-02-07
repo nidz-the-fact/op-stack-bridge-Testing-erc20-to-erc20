@@ -8,7 +8,7 @@ import { FaEthereum } from "react-icons/fa"
 import Web3 from 'web3';
 import hyprIcn from "../assets/images/hypr.svg"
 import flokiIcn from "../assets/images/floki.png"
-import mcIcn from "../assets/images/mc.svg"
+import beamIcn from "../assets/images/beam.png"
 import yggIcn from "../assets/images/ygg.svg"
 import { useAccount, useConnect, useNetwork, useSwitchNetwork, useBalance } from 'wagmi'
 import { InjectedConnector } from 'wagmi/connectors/injected';
@@ -95,7 +95,7 @@ const Withdraw = () => {
   const dataHYPR = useBalance({ address: address, chainId: Number(process.env.REACT_APP_L2_CHAIN_ID), token: process.env.REACT_APP_L2_HYPR, watch: true });
   const dataFLOKI = useBalance({ address: address, chainId: Number(process.env.REACT_APP_L2_CHAIN_ID), token: process.env.REACT_APP_L2_FLOKI, watch: true });
   const dataYGG = useBalance({ address: address, chainId: Number(process.env.REACT_APP_L2_CHAIN_ID), token: process.env.REACT_APP_L2_YGG, watch: true });
-  const dataMC = useBalance({ address: address, chainId: Number(process.env.REACT_APP_L2_CHAIN_ID), token: process.env.REACT_APP_L2_MC, watch: true });
+  const dataBEAM = useBalance({ address: address, chainId: Number(process.env.REACT_APP_L2_CHAIN_ID), token: process.env.REACT_APP_L2_BEAM, watch: true });
   const dataUSDC = useBalance({ address: address, chainId: Number(process.env.REACT_APP_L2_CHAIN_ID), token: process.env.REACT_APP_L2_USDC, watch: true });
   const dataDAI = useBalance({ address: address, chainId: Number(process.env.REACT_APP_L2_CHAIN_ID), token: process.env.REACT_APP_L2_DAI, watch: true });
 
@@ -225,12 +225,12 @@ const Withdraw = () => {
                 setEthValue("")
               }
             }
-            if (sendToken == "MC") {
+            if (sendToken == "BEAM") {
               var assetValue = Web3.utils.toWei(ethValue, "ether")
               setLoader(true);
-              var depositTxn2 = await crossChainMessenger.withdrawERC20(process.env.REACT_APP_L1_MC, process.env.REACT_APP_L2_MC , assetValue);
-              var receiptMC = await depositTxn2.wait()
-              if (receiptMC) {
+              var depositTxn2 = await crossChainMessenger.withdrawERC20(process.env.REACT_APP_L1_BEAM, process.env.REACT_APP_L2_BEAM , assetValue);
+              var receiptBEAM = await depositTxn2.wait()
+              if (receiptBEAM) {
                 setLoader(false);
                 setEthValue("")
               }
@@ -302,9 +302,9 @@ const Withdraw = () => {
       }
       setEthValue(e.target.value)
     }
-    if (sendToken == "MC") {
-      if (dataMC.data?.formatted < e.target.value) {
-        setErrorInput("Insufficient MC balance.")
+    if (sendToken == "BEAM") {
+      if (dataBEAM.data?.formatted < e.target.value) {
+        setErrorInput("Insufficient BEAM balance.")
       } else {
         setErrorInput("")
       }
@@ -366,7 +366,7 @@ const Withdraw = () => {
                     <option>USDC</option>
                     <option>DAI</option>
                     <option>FLOKI</option>
-                    <option>MC</option>
+                    <option>BEAM</option>
                     <option>YGG</option>
                   </Form.Select>
                 </div>
@@ -378,7 +378,7 @@ const Withdraw = () => {
                   sendToken === "HYPR" ? <span className='input_icn'><Image src={hyprIcn} style={{ width: '20px' }} alt="To icn" fluid /></span> : 
                   sendToken === "FLOKI" ? <span className='input_icn'><Image src={flokiIcn} style={{ width: '20px' }} alt="To icn" fluid /></span> : 
                   sendToken === "YGG" ? <span className='input_icn'><Image src={yggIcn} style={{ width: '20px' }} alt="To icn" fluid /></span> : 
-                  sendToken === "MC" ? <span className='input_icn'><Image src={mcIcn} style={{ width: '20px' }} alt="To icn" fluid /></span> : 
+                  sendToken === "BEAM" ? <span className='input_icn'><Image src={beamIcn} style={{ width: '20px' }} alt="To icn" fluid /></span> : 
                   <span className='input_icn'><Image src={hyprIcn} style={{ width: '20px' }} alt="To icn" fluid /></span>}
                 </div>
               </Form>
@@ -391,7 +391,7 @@ const Withdraw = () => {
             sendToken === "HYPR" ? address && <p className='wallet_bal mt-2'>Balance: {Number(dataHYPR.data?.formatted).toFixed(5)} HYPR</p> : 
             sendToken === "FLOKI" ? address && <p className='wallet_bal mt-2'>Balance: {Number(dataFLOKI.data?.formatted).toFixed(5)} FLOKI</p> : 
             sendToken === "YGG" ? address && <p className='wallet_bal mt-2'>Balance: {Number(dataYGG.data?.formatted).toFixed(5)} YGG</p> : 
-            sendToken === "MC" ? address && <p className='wallet_bal mt-2'>Balance: {Number(dataMC.data?.formatted).toFixed(5)} MC</p> : 
+            sendToken === "BEAM" ? address && <p className='wallet_bal mt-2'>Balance: {Number(dataBEAM.data?.formatted).toFixed(5)} BEAM</p> : 
             <p className='wallet_bal mt-2'>Balance: {Number(dataUSDC.data?.formatted).toFixed(5)} USDC</p>}
           </div>
           <div className='deposit_details_wrap'>
@@ -407,7 +407,7 @@ const Withdraw = () => {
               sendToken == "HYPR" ? <span className='input_icn'><Image src={hyprIcn} alt="To icn" width="20" fluid /></span> : 
               sendToken == "FLOKI" ? <span className='input_icn'><Image src={flokiIcn} alt="To icn" width="20" fluid /></span> : 
               sendToken == "YGG" ? <span className='input_icn'><Image src={yggIcn} alt="To icn" width="20" fluid /></span> : 
-              sendToken == "MC" ? <span className='input_icn'><Image src={mcIcn} alt="To icn" width="20" fluid /></span> : 
+              sendToken == "BEAM" ? <span className='input_icn'><Image src={beamIcn} alt="To icn" width="20" fluid /></span> : 
               <span className='input_icn'><Usdc style={{ fontSize: '1.5rem' }} /></span>}
               <p>You’ll receive: {ethValue ? ethValue : "0"} {sendToken}</p>
               <div></div>
