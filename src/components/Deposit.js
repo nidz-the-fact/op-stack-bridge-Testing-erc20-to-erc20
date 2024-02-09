@@ -24,7 +24,8 @@ const readAllowance = (tokenAddr, holderAddr) => {
     functionName: "allowance",
     args: [holderAddr, "0x1bBde518ad01BaABFE30020407A7630FB17B545d"],
   })
-  
+
+  return token;
 }
 
 const Deposit = () => {
