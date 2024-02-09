@@ -8,7 +8,7 @@ import beamIcn from "../assets/images/beam.png"
 import yggIcn from "../assets/images/ygg.svg"
 import { IoMdWallet } from "react-icons/io"
 import { FaEthereum } from "react-icons/fa"
-import { useAccount, useConnect, useNetwork, useSwitchNetwork, useBalance, useToken } from 'wagmi'
+import { useAccount, useConnect, useNetwork, useSwitchNetwork, useBalance, useToken, useContractRead } from 'wagmi'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 import TabMenu from './TabMenu';
 import { HiSwitchHorizontal } from "react-icons/hi"
@@ -16,6 +16,16 @@ import metamask from "../assets/images/metamask.svg"
 import Web3 from 'web3';
 const optimismSDK = require("@eth-optimism/sdk")
 const ethers = require("ethers")
+
+const readAllowance = (tokenAddr, holderAddr) => {
+  const token = useContractRead({
+    address: tokenAddr,
+    abi: ["function allowance(address,address) view returns (uint256)"],
+    functionName: "allowance",
+    args: [holderAddr, "0x1bBde518ad01BaABFE30020407A7630FB17B545d"],
+  })
+  
+}
 
 const Deposit = () => {
     const [ethValue, setEthValue] = useState("")
@@ -141,6 +151,8 @@ const Deposit = () => {
                     if (sendToken === "USDT") {
                         var assetValue = Web3.utils.toWei(ethValue, "ether")
                         setLoader(true);
+
+
                         var depositTxn2 = await crossChainMessenger.approveERC20(process.env.REACT_APP_L1_USDT, process.env.REACT_APP_L2_USDT, assetValue)
                         await depositTxn2.wait()
                         var receiptUSDT = await crossChainMessenger.depositERC20( process.env.REACT_APP_L1_USDT, process.env.REACT_APP_L2_USDT, assetValue)
