@@ -219,12 +219,20 @@ const Deposit = () => {
           if (sendToken === "USDC") {
             var assetValue = Web3.utils.toWei(ethValue, "ether");
             setLoader(true);
-            var depositTxn2 = await crossChainMessenger.approveERC20(
+
+            const approve = await crossChainMessenger.approval(
               process.env.REACT_APP_L1_USDC,
               process.env.REACT_APP_L2_USDC,
-              assetValue,
             );
-            await depositTxn2.wait();
+            if (approve === assetValue) {
+              var depositTxn2 = await crossChainMessenger.approveERC20(
+                process.env.REACT_APP_L1_USDC,
+                process.env.REACT_APP_L2_USDC,
+                assetValue,
+              );
+              await depositTxn2.wait();
+            }
+
             var receiptUSDC = await crossChainMessenger.depositERC20(
               process.env.REACT_APP_L1_USDC,
               process.env.REACT_APP_L2_USDC,
@@ -239,12 +247,19 @@ const Deposit = () => {
           if (sendToken === "DAI") {
             var assetValue = Web3.utils.toWei(ethValue, "ether");
             setLoader(true);
-            var depositTxn2 = await crossChainMessenger.approveERC20(
+
+            const approve = await crossChainMessenger.approval(
               process.env.REACT_APP_L1_DAI,
               process.env.REACT_APP_L2_DAI,
-              assetValue,
             );
-            await depositTxn2.wait();
+            if (approve === assetValue) {
+              var depositTxn2 = await crossChainMessenger.approveERC20(
+                process.env.REACT_APP_L1_DAI,
+                process.env.REACT_APP_L2_DAI,
+                assetValue,
+              );
+              await depositTxn2.wait();
+            }
             var receiptDAI = await crossChainMessenger.depositERC20(
               process.env.REACT_APP_L1_DAI,
               process.env.REACT_APP_L2_DAI,
@@ -259,12 +274,19 @@ const Deposit = () => {
           if (sendToken === "HYPR") {
             var assetValue = Web3.utils.toWei(ethValue, "ether");
             setLoader(true);
-            var depositTxn2 = await crossChainMessenger.approveERC20(
+
+            const approve = await crossChainMessenger.approval(
               process.env.REACT_APP_L1_HYPR,
               process.env.REACT_APP_L2_HYPR,
-              assetValue,
             );
-            await depositTxn2.wait();
+            if (approve === assetValue) {
+              var depositTxn2 = await crossChainMessenger.approveERC20(
+                process.env.REACT_APP_L1_HYPR,
+                process.env.REACT_APP_L2_HYPR,
+                assetValue,
+              );
+              await depositTxn2.wait();
+            }
             var receiptHYPR = await crossChainMessenger.depositERC20(
               process.env.REACT_APP_L1_HYPR,
               process.env.REACT_APP_L2_HYPR,
@@ -279,12 +301,18 @@ const Deposit = () => {
           if (sendToken === "FLOKI") {
             var assetValue = Web3.utils.toWei(ethValue, "ether");
             setLoader(true);
-            var depositTxn2 = await crossChainMessenger.approveERC20(
+            const approve = await crossChainMessenger.approval(
               process.env.REACT_APP_L1_FLOKI,
               process.env.REACT_APP_L2_FLOKI,
-              assetValue,
             );
-            await depositTxn2.wait();
+            if (approve === assetValue) {
+              var depositTxn2 = await crossChainMessenger.approveERC20(
+                process.env.REACT_APP_L1_FLOKI,
+                process.env.REACT_APP_L2_FLOKI,
+                assetValue,
+              );
+              await depositTxn2.wait();
+            }
             var receiptFLOKI = await crossChainMessenger.depositERC20(
               process.env.REACT_APP_L1_FLOKI,
               process.env.REACT_APP_L2_FLOKI,
@@ -299,12 +327,18 @@ const Deposit = () => {
           if (sendToken === "YGG") {
             var assetValue = Web3.utils.toWei(ethValue, "ether");
             setLoader(true);
-            var depositTxn2 = await crossChainMessenger.approveERC20(
+            const approve = await crossChainMessenger.approval(
               process.env.REACT_APP_L1_YGG,
               process.env.REACT_APP_L2_YGG,
-              assetValue,
             );
-            await depositTxn2.wait();
+            if (approve === assetValue) {
+              var depositTxn2 = await crossChainMessenger.approveERC20(
+                process.env.REACT_APP_L1_YGG,
+                process.env.REACT_APP_L2_YGG,
+                assetValue,
+              );
+              await depositTxn2.wait();
+            }
             var receiptYGG = await crossChainMessenger.depositERC20(
               process.env.REACT_APP_L1_YGG,
               process.env.REACT_APP_L2_YGG,
@@ -319,12 +353,18 @@ const Deposit = () => {
           if (sendToken === "BEAM") {
             var assetValue = Web3.utils.toWei(ethValue, "ether");
             setLoader(true);
-            var depositTxn2 = await crossChainMessenger.approveERC20(
-              process.env.REACT_APP_L1_BEAM,
-              process.env.REACT_APP_L2_BEAM,
-              assetValue,
+            const approve = await crossChainMessenger.approval(
+              process.env.REACT_APP_L1_USDC,
+              process.env.REACT_APP_L2_USDC,
             );
-            await depositTxn2.wait();
+            if (approve === assetValue) {
+              var depositTxn2 = await crossChainMessenger.approveERC20(
+                process.env.REACT_APP_L1_BEAM,
+                process.env.REACT_APP_L2_BEAM,
+                assetValue,
+              );
+              await depositTxn2.wait();
+            }
             var receiptBEAM = await crossChainMessenger.depositERC20(
               process.env.REACT_APP_L1_BEAM,
               process.env.REACT_APP_L2_BEAM,
