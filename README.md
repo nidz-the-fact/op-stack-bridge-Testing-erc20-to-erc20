@@ -9,14 +9,12 @@ Clone this repo
 ```
 git clone https://github.com/HyprNetwork/op-stack-bridge.git
 
-yarn 
+yarn
 ```
 
 ## Running the service
 
 Copy `.example.env` into a new file named `.env`, then set the environment variables listed there.
-
-
 
 Once your environment variables or flags have been set, run the service via:
 
@@ -27,5 +25,3 @@ yarn start
 ## What this service does
 
 The `op-bridge` uses the @eth-optimism/sdk https://sdk.optimism.io/ to provide the bridgining functionality by using CrossChainMessenger. It provides the Deposit and withdraw functionality.
-
-
