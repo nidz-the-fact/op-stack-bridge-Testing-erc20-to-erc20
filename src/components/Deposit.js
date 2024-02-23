@@ -196,7 +196,7 @@ const Deposit = () => {
               process.env.REACT_APP_L1_USDT,
               process.env.REACT_APP_L2_USDT,
             );
-            if (approve === assetValue) {
+            if (approve < assetValue) {
               var depositTxn2 = await crossChainMessenger.approveERC20(
                 process.env.REACT_APP_L1_USDT,
                 process.env.REACT_APP_L2_USDT,
@@ -224,7 +224,7 @@ const Deposit = () => {
               process.env.REACT_APP_L1_USDC,
               process.env.REACT_APP_L2_USDC,
             );
-            if (approve === assetValue) {
+            if (approve < assetValue) {
               var depositTxn2 = await crossChainMessenger.approveERC20(
                 process.env.REACT_APP_L1_USDC,
                 process.env.REACT_APP_L2_USDC,
@@ -252,7 +252,7 @@ const Deposit = () => {
               process.env.REACT_APP_L1_DAI,
               process.env.REACT_APP_L2_DAI,
             );
-            if (approve === assetValue) {
+            if (approve < assetValue) {
               var depositTxn2 = await crossChainMessenger.approveERC20(
                 process.env.REACT_APP_L1_DAI,
                 process.env.REACT_APP_L2_DAI,
@@ -279,7 +279,7 @@ const Deposit = () => {
               process.env.REACT_APP_L1_HYPR,
               process.env.REACT_APP_L2_HYPR,
             );
-            if (approve === assetValue) {
+            if (approve < assetValue) {
               var depositTxn2 = await crossChainMessenger.approveERC20(
                 process.env.REACT_APP_L1_HYPR,
                 process.env.REACT_APP_L2_HYPR,
@@ -305,7 +305,7 @@ const Deposit = () => {
               process.env.REACT_APP_L1_FLOKI,
               process.env.REACT_APP_L2_FLOKI,
             );
-            if (approve === assetValue) {
+            if (approve < assetValue) {
               var depositTxn2 = await crossChainMessenger.approveERC20(
                 process.env.REACT_APP_L1_FLOKI,
                 process.env.REACT_APP_L2_FLOKI,
@@ -331,7 +331,7 @@ const Deposit = () => {
               process.env.REACT_APP_L1_YGG,
               process.env.REACT_APP_L2_YGG,
             );
-            if (approve === assetValue) {
+            if (approve < assetValue) {
               var depositTxn2 = await crossChainMessenger.approveERC20(
                 process.env.REACT_APP_L1_YGG,
                 process.env.REACT_APP_L2_YGG,
@@ -357,7 +357,7 @@ const Deposit = () => {
               process.env.REACT_APP_L1_USDC,
               process.env.REACT_APP_L2_USDC,
             );
-            if (approve === assetValue) {
+            if (approve < assetValue) {
               var depositTxn2 = await crossChainMessenger.approveERC20(
                 process.env.REACT_APP_L1_BEAM,
                 process.env.REACT_APP_L2_BEAM,
