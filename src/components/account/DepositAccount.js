@@ -95,6 +95,35 @@ const DepositAccount = () => {
     return weiValue / 1000000000000000000;
   }
 
+  function getTokenName(address) {
+    if (address === process.env.REACT_APP_L2_HYPR) {
+      return "HYPR"
+    }
+    if (address === process.env.REACT_APP_L2_FLOKI) {
+      return "FLOKI"
+    }
+    if (address === process.env.REACT_APP_L2_BEAM) {
+      return "BEAM"
+    }
+    if (address === process.env.REACT_APP_L2_USDT) {
+      return "USDT"
+    }
+    if (address === process.env.REACT_APP_L2_USDC) {
+      return "HYPR"
+    }
+    if (address === process.env.REACT_APP_L2_HYPR) {
+      return "USDC"
+    }
+    if (address === process.env.REACT_APP_L2_DAI) {
+      return "DAI"
+    }
+    if (address === process.env.REACT_APP_L2_YGG) {
+      return "YGG"
+    }
+
+    return "ETH"
+  }
+
   useEffect(() => {
     if (isConnected) {
       getDeposit();
@@ -153,13 +182,13 @@ const DepositAccount = () => {
                   </thead>
                   <tbody>
                     {currentItemsCollections.map((element, index) => {
-                      const { timestamp, transactionHash, amount } = element;
+                      const { timestamp, transactionHash, amount, l2Token } = element;
                       // console.log("amount", amount._hex);
                       return (
                         <tr key={index}>
                           <td>{timeConverter(timestamp)}</td>
                           <td>Deposit</td>
-                          <td>{retrieveEthValue(amount)} ETH</td>
+                          <td>{retrieveEthValue(amount)} {getTokenName(l2Token)}</td>
                           <td>{`${transactionHash.slice(0, 8)}...${transactionHash.slice(-8)}`}</td>
                           <td>Completed</td>
                         </tr>
