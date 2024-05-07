@@ -4,6 +4,7 @@ import "../../assets/style/common/footer.scss";
 import { BsDiscord } from "react-icons/bs";
 import { AiFillTwitterCircle } from "react-icons/ai";
 import logo from "../../assets/images/full_white_mixed.svg";
+import jbc from "../../assets/images/jbcpng";
 import { FaTelegram } from "react-icons/fa";
 import { Image } from "react-bootstrap";
 const Footer = () => {
@@ -14,21 +15,25 @@ const Footer = () => {
         <div className="footer_text_wrap">
           <ul>
             <li>
+              <Link to="https://jibchain.net">
+                <Image src={jbc} alt="logo" width="50" fluid />
+              </Link>
+              {/* &nbsp; &nbsp;
               <Link to="https://www.hypr.network">
                 <Image src={logo} alt="logo" width="50" fluid />
-              </Link>
+              </Link> */}
             </li>
           </ul>
         </div>
         <div className="footer_icn_wrap">
           <ul>
-            <li>
+            {/* <li>
               <Link to="https://t.me/hyprnetwork">
                 <FaTelegram />
               </Link>
-            </li>
+            </li> */}
             <li>
-              <Link to="https://twitter.com/hypr_network">
+              <Link to="https://twitter.com/jibchain">
                 <AiFillTwitterCircle />
               </Link>
             </li>
