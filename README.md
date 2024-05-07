@@ -256,18 +256,23 @@ Note: For example, you might change the function call ['function withdraw(addres
   }, [chain, address]);
 ```
 
+# 6. Adjust the network you want. - src\components\common\Header.js
+```
+# Example
+    } else if (chain?.id == 88991) {
+      setNetwork("Jibchain Testnet");
+```
+
+# 7. Test and build
+```
+# Build: yarn build
+You will get the build file and upload it to the website.
+```
+
+
 ## Note: We have closed the deposit information page. because it is not yet available for ERC20 > Native (But you can still enable for ERC20 > ERC20.)
 ```
-# ln 191, Col 24
-  useEffect(() => {
-    if (isConnected) { 
-      if (chain.id !== 88991) { // edit
-        switchNetwork(process.env.REACT_APP_L1_CHAIN_ID);
-      } else {
-        getWithdraw();
-      }
-    }
-  }, [chain, address]);
+# src\components\account\Account.js
 ```
 
 
