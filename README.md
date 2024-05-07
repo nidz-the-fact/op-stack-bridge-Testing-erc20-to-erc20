@@ -9,7 +9,9 @@ Clone this repo
 
 ```
 # Install [node](https://nodejs.org/en) v.18.18+
-# yarn or npm install
+yarn
+or
+npm install
 ```
 
 ## Running the service
@@ -20,6 +22,8 @@ Once your environment variables or flags have been set, run the service via:
 
 ```
 yarn start
+or
+npm run start
 ```
 
 ## How to set up deployment
