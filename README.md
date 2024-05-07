@@ -1,4 +1,4 @@
-# UI: OP Stack Bridge
+# UI: OP Stack Bridge (ERC20 > ERC20)
 
 The `op-Bridge` is a service for op-stack chains which provides a functional UI for the Bridging between L1 and L2.
 cc.https://github.com/HyprNetwork/op-stack-bridge, from: https://www.hypr.network/
