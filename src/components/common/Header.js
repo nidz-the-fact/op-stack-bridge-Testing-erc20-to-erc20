@@ -9,7 +9,7 @@ import {
   OverlayTrigger,
   Tooltip,
 } from "react-bootstrap";
-import logo from "../../assets/images/full_white_mixed.svg";
+import logo from "../../assets/images/jbc.png";
 import { Link } from "react-router-dom";
 import { useAccount, useConnect, useNetwork } from "wagmi";
 import { InjectedConnector } from "wagmi/connectors/injected";
@@ -59,6 +59,18 @@ const HeaderNew = () => {
       setNetwork("Hypr Mainnet");
     } else if (chain?.id == 1) {
       setNetwork("Ethereum Mainnet");
+
+    } else if (chain?.id == 84532) {
+      setNetwork("Base Sepolia Testnet");
+
+    } else if (chain?.id == 7) {
+      setNetwork("ThaiChain");
+
+    } else if (chain?.id == 88991) {
+      setNetwork("Jibchain Testnet");
+    } else if (chain?.id == 7001) {
+      setNetwork("Hera testnet");
+
     } else {
       setNetwork("Unsupported Network");
     }
@@ -78,8 +90,8 @@ const HeaderNew = () => {
       <header className="app_header">
         <Navbar expand="lg" variant="dark">
           <Container fluid>
-            <Link to="https://www.hypr.network" className="app_logo">
-              <Image src={logo} alt="logo" fluid />
+            <Link to="/" className="app_logo">
+            <Image src={logo} alt="logo" fluid style={{ maxHeight: '50%', maxWidth: '50%' }} />
             </Link>
             <Navbar.Toggle aria-controls="navbarScroll" />
             <Navbar.Collapse id="navbarScroll">
@@ -151,7 +163,7 @@ const HeaderNew = () => {
                           </h4>
                         </div>
                         <Dropdown.Item as={Link} to="/account/deposit">
-                          <AiOutlineDownload /> View Deposit
+                          {/* <AiOutlineDownload /> View Deposit */}
                         </Dropdown.Item>
                         <Dropdown.Item as={Link} to="/account/withdraw">
                           <AiOutlineUpload /> View Withdrawals
