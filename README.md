@@ -113,6 +113,7 @@ const { chains, publicClient } = configureChains(
           }
 ```
 Note: For example, you might change the function call ['function depositERC20(address _l1Token, address _l2Token, uint256 _amount, uint32 _minGasLimit, bytes _extraData)'] (or function depositERC20Transaction...) from OptimismPortalProxy 👇
+# 3.1
 ```
           if (sendToken === "ERC-20") { // USDT - L2Gas
             var assetValue = Web3.utils.toWei(ethValue, "ether");
