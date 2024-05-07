@@ -3,9 +3,18 @@
 The `op-Bridge` is a service for op-stack chains which provides a functional UI for the Bridging between L1 and L2.
 cc.https://github.com/HyprNetwork/op-stack-bridge, from: https://www.hypr.network/
 
+## Installation
+
+Clone this repo
+
+```
+# Install [node](https://nodejs.org/en) v.18.18+
+# yarn or npm install
+```
+
 ## Running the service
 
-`.env`, then set the environment variables listed there.
+New file named `.env`, then set the environment variables listed there.
 
 Once your environment variables or flags have been set, run the service via:
 
