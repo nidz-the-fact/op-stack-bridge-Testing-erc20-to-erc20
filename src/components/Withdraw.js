@@ -7,6 +7,10 @@ import { MdOutlineSecurity } from "react-icons/md";
 import { FaEthereum } from "react-icons/fa";
 import Web3 from "web3";
 import hyprIcn from "../assets/images/hypr.svg";
+
+import jbc from "../assets/images/jbc.png";
+import erc20 from "../assets/images/erc20.png";
+
 import flokiIcn from "../assets/images/floki.png";
 import beamIcn from "../assets/images/beam.png";
 import yggIcn from "../assets/images/ygg.svg";
@@ -217,20 +221,55 @@ const Withdraw = () => {
                 setEthValue("");
               }
             }
-            if (sendToken == "USDT") {
+            
+
+            if (sendToken == "ERC-20") { // USDT = ERC-20
               var assetValue = Web3.utils.toWei(ethValue, "ether");
               setLoader(true);
-              var depositTxn2 = await crossChainMessenger.withdrawERC20(
-                process.env.REACT_APP_L1_USDT,
-                process.env.REACT_APP_L2_USDT,
-                assetValue,
-              );
-              var receiptUSDT = await depositTxn2.wait();
-              if (receiptUSDT) {
-                setLoader(false);
-                setEthValue("");
-              }
+
+            // Connect Layer 2
+            const l2Provider = new ethers.providers.Web3Provider(window.ethereum);
+            const l2Signer = l2Provider.getSigner();
+          
+            // Contract instance ERC-20 token on Layer 1
+            const usdtContract = new ethers.Contract(
+              process.env.REACT_APP_L2_USDT, // ERC-20 Token contract address on Layer 1
+              ['function approve(address spender, uint256 amount) returns (bool)'],
+              l2Signer
+            );
+            
+            // Token ERC-20 approve Layer 1 to contract on Layer 2
+            const approvalTx = await usdtContract.approve(
+              process.env.REACT_APP_L2_BRIDGE, // L2 contract address for deposit
+              assetValue
+            );
+            await approvalTx.wait();
+          
+            // Check if approval is less than assetValue
+            if (approvalTx && approvalTx.value < assetValue) {
+              // Contract instance on Layer 2
+              const l2Contract = new ethers.Contract(
+                process.env.REACT_APP_L2_BRIDGE, // Contract address on Layer 2
+                ['function withdraw(address _l2Token, uint256 _amount, uint32 _minGasLimit, bytes _extraData)'], // Function signature
+                l2Signer
+             );
+              // withdraw
+              const _l2Token = process.env.REACT_APP_L2_USDT; // amount
+              const _amount = assetValue; // amount
+              const _minGasLimit = 3000000; // gas limit (fix - 3000000 (90% +))
+              const _extraData = ethers.utils.hexlify('0x'); // data (fix - 0=+)
+            
+              // Write depositERC20Transaction
+              const depositTx = await l2Contract.withdraw(_l2Token, _amount, _minGasLimit, _extraData);
+              await depositTx.wait();
             }
+          
+            // Loader & ethValue 
+            setLoader(false);
+            setEthValue("");
+          }
+
+
             if (sendToken == "USDC") {
               var assetValue = Web3.utils.toWei(ethValue, "ether");
               setLoader(true);
@@ -345,7 +384,7 @@ const Withdraw = () => {
       }
       setEthValue(e.target.value);
     }
-    if (sendToken == "USDT") {
+    if (sendToken == "ERC-20") {
       if (dataUSDT.data?.formatted < e.target.value) {
         setErrorInput("Insufficient HYPR balance.");
       } else {
@@ -444,7 +483,8 @@ const Withdraw = () => {
             <div className="deposit_price_title">
               <p>From</p>
               <h5>
-                <Image src={hyprIcn} alt="To icn" fluid /> Hypr
+                {/* <Image src={hyprIcn} alt="To icn" fluid /> Hypr */}
+                <Image src={jbc} alt="To icn" fluid /> Hera testnet L2 #1
               </h5>
             </div>
             <div className="deposit_input_wrap">
@@ -465,13 +505,13 @@ const Withdraw = () => {
                     onChange={({ target }) => setSendToken(target.value)}
                   >
                     <option>ETH</option>
-                    <option>HYPR</option>
-                    <option>USDT</option>
-                    <option>USDC</option>
+                    {/* <option>HYPR</option> */}
+                    <option>ERC-20</option>
+                    {/* <option>USDC</option>
                     <option>DAI</option>
                     <option>FLOKI</option>
                     <option>BEAM</option>
-                    <option>YGG</option>
+                    <option>YGG</option> */}
                   </Form.Select>
                 </div>
                 <div className="input_icn_wrap">
@@ -479,9 +519,15 @@ const Withdraw = () => {
                     <span className="input_icn">
                       <Ethereum style={{ fontSize: "1.5rem" }} />
                     </span>
-                  ) : sendToken === "USDT" ? (
+                  ) : sendToken === "ERC-20" ? (
                     <span className="input_icn">
-                      <Usdt style={{ fontSize: "1.5rem" }} />
+                      {/* <Usdt style={{ fontSize: "1.5rem" }} /> */}
+                      <Image
+                        src={erc20}
+                        style={{ width: "20px" }}
+                        alt="To icn"
+                        fluid
+                      />
                     </span>
                   ) : sendToken === "USDC" ? (
                     <span className="input_icn">
@@ -547,10 +593,10 @@ const Withdraw = () => {
                   Balance: {Number(data?.formatted).toFixed(5)} ETH
                 </p>
               )
-            ) : sendToken == "USDT" ? (
+            ) : sendToken == "ERC-20" ? (
               address && (
                 <p className="wallet_bal mt-2">
-                  Balance: {Number(dataUSDT.data?.formatted).toFixed(5)} USDT
+                  Balance: {Number(dataUSDT.data?.formatted).toFixed(5)} ERC-20
                 </p>
               )
             ) : sendToken == "USDC" ? (
@@ -599,7 +645,8 @@ const Withdraw = () => {
             <div className="deposit_details">
               <p>To:</p>
               <h5>
-                <FaEthereum /> Ethereum
+                {/* <FaEthereum /> Ethereum */}
+                <Image src={jbc} alt="To icn" fluid /> Jibchain Testnet
               </h5>
             </div>
             <div className="withdraw_bal_sum">
@@ -607,9 +654,15 @@ const Withdraw = () => {
                 <span className="input_icn">
                   <Ethereum style={{ fontSize: "1.5rem" }} />
                 </span>
-              ) : sendToken == "USDT" ? (
+              ) : sendToken == "ERC-20" ? (
                 <span className="input_icn">
-                  <Usdt style={{ fontSize: "1.5rem" }} />
+                  {/* <Usdt style={{ fontSize: "1.5rem" }} /> */}
+                  <Image
+                        src={erc20}
+                        style={{ width: "20px" }}
+                        alt="To icn"
+                        fluid
+                      />
                 </span>
               ) : sendToken == "USDC" ? (
                 <span className="input_icn">
@@ -665,7 +718,7 @@ const Withdraw = () => {
             ) : chain.id !== Number(process.env.REACT_APP_L2_CHAIN_ID) ? (
               <button className="btn deposit_btn" onClick={handleSwitch}>
                 <HiSwitchHorizontal />
-                Switch to Hypr
+                Switch to Network
               </button>
             ) : (
               <button
