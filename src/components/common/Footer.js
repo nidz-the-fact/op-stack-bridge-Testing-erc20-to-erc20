@@ -4,7 +4,7 @@ import "../../assets/style/common/footer.scss";
 import { BsDiscord } from "react-icons/bs";
 import { AiFillTwitterCircle } from "react-icons/ai";
 import logo from "../../assets/images/full_white_mixed.svg";
-import jbc from "../../assets/images/jbcpng";
+import jbc from "../../assets/images/jbc.png";
 import { FaTelegram } from "react-icons/fa";
 import { Image } from "react-bootstrap";
 const Footer = () => {
