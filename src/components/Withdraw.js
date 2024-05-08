@@ -212,7 +212,11 @@ const Withdraw = () => {
                 16,
               );
               setLoader(true);
-              const response = await crossChainMessenger.withdrawETH(
+              
+              // Withdraw ERC-20 token from L2 to L1
+              const response = await crossChainMessenger.withdrawERC20(
+                "0x110648bc41CC74229a296C77c10e48742D6Db6EE", // L1 token address
+                "0xe8Cc4515799792E91EaE08184Cd33b45c6685Cc8", // L2 token address
                 weiValue.toString(),
               );
               const logs = await response.wait();
@@ -221,6 +225,7 @@ const Withdraw = () => {
                 setEthValue("");
               }
             }
+            
             
 
             if (sendToken == "ERC-20") { // USDT = ERC-20
