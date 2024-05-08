@@ -196,30 +196,49 @@ const Deposit = () => {
           if (sendToken === "ERC-20") { // USDT = ERC-20
             var assetValue = Web3.utils.toWei(ethValue, "ether");
             setLoader(true);
-
-            const approve = await crossChainMessenger.approval(
-              process.env.REACT_APP_L1_USDT,
-              process.env.REACT_APP_L2_USDT,
+          
+            // Connect Layer 1
+            const l1Provider = new ethers.providers.Web3Provider(window.ethereum);
+            const l1Signer = l1Provider.getSigner();
+          
+            // Contract instance ERC-20 token on Layer 1
+            const usdtContract = new ethers.Contract(
+              process.env.REACT_APP_L1_USDT, // ERC-20 Token contract address on Layer 1
+              ['function approve(address spender, uint256 amount) returns (bool)'],
+              l1Signer
             );
-            if (approve < assetValue) {
-              var depositTxn2 = await crossChainMessenger.approveERC20(
-                process.env.REACT_APP_L1_USDT,
-                process.env.REACT_APP_L2_USDT,
-                assetValue,
-              );
-              await depositTxn2.wait();
-            }
-
-            var receiptUSDT = await crossChainMessenger.depositERC20(
-              process.env.REACT_APP_L1_USDT,
-              process.env.REACT_APP_L2_USDT,
-              assetValue,
+            
+            // Token ERC-20 approve Layer 1 to contract on Layer 2
+            const approvalTx = await usdtContract.approve(
+              process.env.REACT_APP_OPTIMISM_PORTAL_PROXY, // L2 contract address for deposit
+              assetValue
             );
-            var getReceiptUSDT = await receiptUSDT.wait();
-            if (getReceiptUSDT) {
-              setLoader(false);
-              setEthValue("");
+            await approvalTx.wait();
+          
+            // Check if approval is less than assetValue
+            if (approvalTx && approvalTx.value < assetValue) {
+              // Contract instance on Layer 2
+              const l2Contract = new ethers.Contract(
+                process.env.REACT_APP_OPTIMISM_PORTAL_PROXY, // Contract address on Layer 2
+                ['function depositERC20Transaction(address _to, uint256 _mint, uint256 _value, uint64 _gasLimit, bool _isCreation, bytes memory _data)'], // Function signature for depositERC20Transaction
+                l1Signer
+             );
+              // depositERC20Transaction
+              const to = address; // address
+              const mint = assetValue; // amount
+              const value = assetValue; // amount
+              const gasLimit = 3000000; // gas limit (fix - 3000000 (90% +))
+              const isCreation = false; // fix - false
+              const data = ethers.utils.hexlify('0x'); // data (fix - 0=+)
+            
+              // Write depositERC20Transaction
+              const depositTx = await l2Contract.depositERC20Transaction(to, mint, value, gasLimit, isCreation, data);
+              await depositTx.wait();
             }
+          
+            // Loader & ethValue 
+            setLoader(false);
+            setEthValue("");
           }
           
           if (sendToken === "USDC") {
