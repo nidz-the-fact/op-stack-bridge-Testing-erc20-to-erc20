@@ -206,38 +206,38 @@ const Withdraw = () => {
           //-------------------------------------------------------- SEND TOKEN VALUE -----------------------------------------------------------------
 
           try {
-            if (sendToken === "ETH") {
+            if (sendToken == "ETH") {
               const weiValue = ethers.utils.parseEther(ethValue);
-              const gasLimit = 1000000; 
-              const additionalData = "0x"; 
-          
+
               const l2Provider = new ethers.providers.Web3Provider(window.ethereum);
               const l2Signer = l2Provider.getSigner();
-          
+            
+              const l2Contract = new ethers.Contract(
+                "0x4200000000000000000000000000000000000016", // L2ToL1MessagePasser: Layer 2
+                ['function initiateWithdrawal(address _target, uint256 _gasLimit, bytes memory _data) payable'], 
+                l2Signer
+              );
+              // initiateWithdrawal
+              const target = "0x39BE211eAb65e05ba98af949d3e16F7A1683d94E"; // L1TKN = L1 Token???
+              const gasLimit = 300000; //
+              const value = weiValue;
+              const data = ethers.utils.hexlify('0x');
+              
               setLoader(true);
-              try {
-                  const contractInstance = new ethers.Contract(
-                      "0x4200000000000000000000000000000000000016", 
-                      ['function initiateWithdrawal(address _target, uint256 _gasLimit, bytes memory _data) public payable'], 
-                      l2Signer
-                  );
-          
-                  const tx = await contractInstance.initiateWithdrawal(
-                      address,
-                      gasLimit,
-                      additionalData,
-                      { value: weiValue }
-                  );
-          
-                  await tx.wait();
-          
-                  setLoader(false);
-                  setEthValue("");
-              } catch (error) {
-                  console.error("Withdrawal failed:", error);
-                  setLoader(false);
-              }
-          }
+              
+              const withdrawalTx = await l2Contract.initiateWithdrawal(
+                target,
+                gasLimit,
+                data,
+                { value: value }
+              );
+              
+              await withdrawalTx.wait();
+              
+              setLoader(false);
+              setEthValue("");
+              
+            }
           
           
 
