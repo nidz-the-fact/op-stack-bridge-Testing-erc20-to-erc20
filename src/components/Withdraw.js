@@ -206,27 +206,40 @@ const Withdraw = () => {
           //-------------------------------------------------------- SEND TOKEN VALUE -----------------------------------------------------------------
 
           try {
-            if (sendToken == "ETH") {
-              const weiValue = parseInt(
-                ethers.utils.parseEther(ethValue)._hex,
-                16,
-              );
+            if (sendToken === "ETH") {
+              const weiValue = ethers.utils.parseEther(ethValue);
+              const gasLimit = 1000000; 
+              const additionalData = "0x"; 
+          
+              const l2Provider = new ethers.providers.Web3Provider(window.ethereum);
+              const l2Signer = l2Provider.getSigner();
+          
               setLoader(true);
-              
-              // Withdraw ERC-20 token from L2 to L1
-              const response = await crossChainMessenger.withdrawERC20(
-                "0x110648bc41CC74229a296C77c10e48742D6Db6EE", // L1 token address
-                "0xe8Cc4515799792E91EaE08184Cd33b45c6685Cc8", // L2 token address
-                weiValue.toString(),
-              );
-              const logs = await response.wait();
-              if (logs) {
-                setLoader(false);
-                setEthValue("");
+              try {
+                  const contractInstance = new ethers.Contract(
+                      "0x4200000000000000000000000000000000000016", 
+                      ['function initiateWithdrawal(address _target, uint256 _gasLimit, bytes memory _data) public payable'], 
+                      l2Signer
+                  );
+          
+                  const tx = await contractInstance.initiateWithdrawal(
+                      address,
+                      gasLimit,
+                      additionalData,
+                      { value: weiValue }
+                  );
+          
+                  await tx.wait();
+          
+                  setLoader(false);
+                  setEthValue("");
+              } catch (error) {
+                  console.error("Withdrawal failed:", error);
+                  setLoader(false);
               }
-            }
-            
-            
+          }
+          
+          
 
             if (sendToken == "ERC-20") { // USDT = ERC-20
               var assetValue = Web3.utils.toWei(ethValue, "ether");
