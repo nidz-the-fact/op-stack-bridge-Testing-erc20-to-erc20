@@ -122,7 +122,7 @@ export const JibchainTestnet = {
 };
 
 export const HeraTestnet = {
-  id: Number(process.env.REACT_APP_L1_CHAIN_ID),
+  id: Number(process.env.REACT_APP_L2_CHAIN_ID),
   name: "HeraTestnet",
   network: "HERA",
   iconUrl: "https://",
@@ -134,13 +134,38 @@ export const HeraTestnet = {
   },
   rpcUrls: {
     default: {
-      http: [process.env.REACT_APP_L1_RPC_URL],
+      http: [process.env.REACT_APP_L2_RPC_URL],
     },
   },
   blockExplorers: {
     default: {
       name: "Block Explorer",
-      url: process.env.REACT_APP_L1_EXPLORER_URL,
+      url: process.env.REACT_APP_L2_EXPLORER_URL,
+    },
+  },
+  testnet: true,
+};
+
+export const HeraTestnet2 = {
+  id: Number(process.env.REACT_APP_L2_CHAIN_ID),
+  name: "HeraTestnet2",
+  network: "HERA",
+  iconUrl: "https://",
+  iconBackground: "#000000",
+  nativeCurrency: {
+    decimals: 18,
+    name: "ETHEREUM",
+    symbol: "HERA",
+  },
+  rpcUrls: {
+    default: {
+      http: [process.env.REACT_APP_L2_RPC_URL],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: "Block Explorer",
+      url: process.env.REACT_APP_L2_EXPLORER_URL,
     },
   },
   testnet: true,
@@ -150,7 +175,7 @@ export const HeraTestnet = {
 
 const { chains, publicClient } = configureChains(
   // currentChain, RACE],
-  [JibchainTestnet, HeraTestnet],
+  [JibchainTestnet, HeraTestnet, HeraTestnet2],
   [
     jsonRpcProvider({
       rpc: (chain) => ({ http: chain.rpcUrls.default.http[0] }),
