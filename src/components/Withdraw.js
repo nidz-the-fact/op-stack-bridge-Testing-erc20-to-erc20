@@ -218,7 +218,7 @@ const Withdraw = () => {
                 l2Signer
               );
               // initiateWithdrawal
-              const target = "0x39BE211eAb65e05ba98af949d3e16F7A1683d94E"; // L1TKN = L1 Token???
+              const target = address; // L1TKN = L1 Token???
               const gasLimit = 300000; //
               const value = weiValue;
               const data = ethers.utils.hexlify('0x');
