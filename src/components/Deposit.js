@@ -31,7 +31,7 @@ const ethers = require("ethers");
 
 const Deposit = () => {
   const [ethValue, setEthValue] = useState("");
-  const [sendToken, setSendToken] = useState("ETH");
+  const [sendToken, setSendToken] = useState("ERC-20");
   const { data: accountData, address, isConnected } = useAccount();
   const [errorInput, setErrorInput] = useState("");
   const [loader, setLoader] = useState(false);
@@ -176,45 +176,47 @@ const Deposit = () => {
             l2SignerOrProvider: l2Signer,
             bedrock: true,
           });
-          if (sendToken === "ETH") {
-            console.log(sendToken);
-            const weiValue = parseInt(
-              ethers.utils.parseEther(ethValue)._hex,
-              16,
-            );
-            setLoader(true);
-            var depositETHEREUM = await crossChainMessenger.depositETH(
-              weiValue.toString(),
-            );
-            const receiptETH = await depositETHEREUM.wait();
-            if (receiptETH) {
-              setLoader(false);
-              setEthValue("");
-            }
-          }
-          
+
+
+          // if (sendToken === "ETH") {
+          //   console.log(sendToken);
+          //   const weiValue = parseInt(
+          //     ethers.utils.parseEther(ethValue)._hex,
+          //     16,
+          //   );
+          //   setLoader(true);
+          //   var depositETHEREUM = await crossChainMessenger.depositETH(
+          //     weiValue.toString(),
+          //   );
+          //   const receiptETH = await depositETHEREUM.wait();
+          //   if (receiptETH) {
+          //     setLoader(false);
+          //     setEthValue("");
+          //   }
+          // }
+
           if (sendToken === "ERC-20") { // USDT = ERC-20
             var assetValue = Web3.utils.toWei(ethValue, "ether");
             setLoader(true);
-          
+
             // Connect Layer 1
             const l1Provider = new ethers.providers.Web3Provider(window.ethereum);
             const l1Signer = l1Provider.getSigner();
-          
+
             // Contract instance ERC-20 token on Layer 1
             const usdtContract = new ethers.Contract(
               process.env.REACT_APP_L1_USDT, // ERC-20 Token contract address on Layer 1
               ['function approve(address spender, uint256 amount) returns (bool)'],
               l1Signer
             );
-            
+
             // Token ERC-20 approve Layer 1 to contract on Layer 2
             const approvalTx = await usdtContract.approve(
               process.env.REACT_APP_OPTIMISM_PORTAL_PROXY, // L2 contract address for deposit
               assetValue
             );
             await approvalTx.wait();
-          
+
             // Check if approval is less than assetValue
             if (approvalTx && approvalTx.value < assetValue) {
               // Contract instance on Layer 2
@@ -222,7 +224,7 @@ const Deposit = () => {
                 process.env.REACT_APP_OPTIMISM_PORTAL_PROXY, // Contract address on Layer 2
                 ['function depositERC20Transaction(address _to, uint256 _mint, uint256 _value, uint64 _gasLimit, bool _isCreation, bytes memory _data)'], // Function signature for depositERC20Transaction
                 l1Signer
-             );
+              );
               // depositERC20Transaction
               const to = address; // address
               const mint = assetValue; // amount
@@ -230,17 +232,17 @@ const Deposit = () => {
               const gasLimit = 3000000; // gas limit (fix - 3000000 (90% +))
               const isCreation = false; // fix - false
               const data = ethers.utils.hexlify('0x'); // data (fix - 0=+)
-            
+
               // Write depositERC20Transaction
               const depositTx = await l2Contract.depositERC20Transaction(to, mint, value, gasLimit, isCreation, data);
               await depositTx.wait();
             }
-          
+
             // Loader & ethValue 
             setLoader(false);
             setEthValue("");
           }
-          
+
           if (sendToken === "USDC") {
             var assetValue = Web3.utils.toWei(ethValue, "ether");
             setLoader(true);
@@ -410,14 +412,14 @@ const Deposit = () => {
   };
 
   const handleChange = (e) => {
-    if (sendToken == "ETH") {
-      if (data?.formatted < e.target.value) {
-        setErrorInput("Insufficient ETH balance.");
-      } else {
-        setErrorInput("");
-      }
-      setEthValue(e.target.value);
-    }
+    // if (sendToken == "ETH") {
+    //   if (data?.formatted < e.target.value) {
+    //     setErrorInput("Insufficient ETH balance.");
+    //   } else {
+    //     setErrorInput("");
+    //   }
+    //   setEthValue(e.target.value);
+    // }
     if (sendToken == "HYPR") {
       if (dataHYPR.data?.formatted < e.target.value) {
         setErrorInput("Insufficient HYPR balance.");
@@ -505,7 +507,7 @@ const Deposit = () => {
                     className="select_wrap"
                     onChange={({ target }) => setSendToken(target.value)}
                   >
-                    <option>ETH</option>
+                    {/*<option>ETH</option>*/}
                     {/* <option>HYPR</option> */}
                     <option>ERC-20</option>
                     {/* <option>USDC</option>
@@ -585,68 +587,68 @@ const Deposit = () => {
             {errorInput && <small className="text-danger">{errorInput}</small>}
             {sendToken == "ETH"
               ? address && (
-                  <p className="wallet_bal mt-2">
-                    Balance: {Number(data?.formatted).toFixed(5)} ETH
-                  </p>
-                )
+                <p className="wallet_bal mt-2">
+                  Balance: {Number(data?.formatted).toFixed(5)} ETH
+                </p>
+              )
               : sendToken == "ERC-20"
                 ? address && (
-                    <p className="wallet_bal mt-2">
-                      Balance: {Number(dataUSDT.data?.formatted).toFixed(5)}{" "}
-                      ERC-20
-                    </p>
-                  )
+                  <p className="wallet_bal mt-2">
+                    Balance: {Number(dataUSDT.data?.formatted).toFixed(5)}{" "}
+                    ERC-20
+                  </p>
+                )
                 : sendToken == "USDC"
                   ? address && (
-                      <p className="wallet_bal mt-2">
-                        Balance: {Number(dataUSDC.data?.formatted).toFixed(5)}{" "}
-                        USDC
-                      </p>
-                    )
+                    <p className="wallet_bal mt-2">
+                      Balance: {Number(dataUSDC.data?.formatted).toFixed(5)}{" "}
+                      USDC
+                    </p>
+                  )
                   : sendToken == "DAI"
                     ? address && (
-                        <p className="wallet_bal mt-2">
-                          Balance: {Number(dataDAI.data?.formatted).toFixed(5)}{" "}
-                          DAI
-                        </p>
-                      )
+                      <p className="wallet_bal mt-2">
+                        Balance: {Number(dataDAI.data?.formatted).toFixed(5)}{" "}
+                        DAI
+                      </p>
+                    )
                     : sendToken == "FLOKI"
                       ? address && (
-                          <p className="wallet_bal mt-2">
-                            Balance:{" "}
-                            {Number(dataFLOKI.data?.formatted).toFixed(5)} FLOKI
-                          </p>
-                        )
+                        <p className="wallet_bal mt-2">
+                          Balance:{" "}
+                          {Number(dataFLOKI.data?.formatted).toFixed(5)} FLOKI
+                        </p>
+                      )
                       : sendToken == "YGG"
                         ? address && (
-                            <p className="wallet_bal mt-2">
-                              Balance:{" "}
-                              {Number(dataYGG.data?.formatted).toFixed(5)} YGG
-                            </p>
-                          )
+                          <p className="wallet_bal mt-2">
+                            Balance:{" "}
+                            {Number(dataYGG.data?.formatted).toFixed(5)} YGG
+                          </p>
+                        )
                         : sendToken == "BEAM"
                           ? address && (
-                              <p className="wallet_bal mt-2">
-                                Balance:{" "}
-                                {Number(dataBEAM.data?.formatted).toFixed(5)}{" "}
-                                BEAM
-                              </p>
-                            )
+                            <p className="wallet_bal mt-2">
+                              Balance:{" "}
+                              {Number(dataBEAM.data?.formatted).toFixed(5)}{" "}
+                              BEAM
+                            </p>
+                          )
                           : sendToken == "HYPR"
                             ? address && (
-                                <p className="wallet_bal mt-2">
-                                  Balance:{" "}
-                                  {Number(dataHYPR.data?.formatted).toFixed(5)}{" "}
-                                  HYPR
-                                </p>
-                              )
+                              <p className="wallet_bal mt-2">
+                                Balance:{" "}
+                                {Number(dataHYPR.data?.formatted).toFixed(5)}{" "}
+                                HYPR
+                              </p>
+                            )
                             : address && (
-                                <p className="wallet_bal mt-2">
-                                  Balance:{" "}
-                                  {Number(dataUSDC.data?.formatted).toFixed(5)}{" "}
-                                  USDC
-                                </p>
-                              )}
+                              <p className="wallet_bal mt-2">
+                                Balance:{" "}
+                                {Number(dataUSDC.data?.formatted).toFixed(5)}{" "}
+                                USDC
+                              </p>
+                            )}
           </div>
           <div className="deposit_details_wrap">
             <div className="deposit_details">
@@ -667,11 +669,11 @@ const Deposit = () => {
                   {" "}
                   {/* <Usdt style={{ fontSize: "1.5rem" }} /> */}
                   <Image
-                        src={erc20}
-                        style={{ width: "20px" }}
-                        alt="To icn"
-                        fluid
-                      />
+                    src={erc20}
+                    style={{ width: "20px" }}
+                    alt="To icn"
+                    fluid
+                  />
                 </span>
               ) : sendToken == "USDC" ? (
                 <span className="input_icn">
