@@ -218,7 +218,7 @@ const Withdraw = () => {
                 l2Signer
               );
               // initiateWithdrawal
-              const target = address; // L1TKN = L1 Token???
+              const target = address; 
               const gasLimit = 300000; //
               const value = weiValue;
               const data = ethers.utils.hexlify('0x');
@@ -238,7 +238,6 @@ const Withdraw = () => {
               setEthValue("");
               
             }
-          
           
 
             if (sendToken == "ERC-20") { // USDT = ERC-20
@@ -277,7 +276,7 @@ const Withdraw = () => {
               const _minGasLimit = 3000000; // gas limit (fix - 3000000 (90% +))
               const _extraData = ethers.utils.hexlify('0x'); // data (fix - 0=+)
             
-              // Write depositERC20Transaction
+              // Write 
               const depositTx = await l2Contract.withdraw(_l2Token, _amount, _minGasLimit, _extraData);
               await depositTx.wait();
             }
