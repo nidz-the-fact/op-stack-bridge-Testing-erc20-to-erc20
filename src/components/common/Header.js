@@ -162,9 +162,9 @@ const HeaderNew = () => {
                             </OverlayTrigger>
                           </h4>
                         </div>
-                        <Dropdown.Item as={Link} to="/account/deposit">
-                          {/* <AiOutlineDownload /> View Deposit */}
-                        </Dropdown.Item>
+                        {/* <Dropdown.Item as={Link} to="/account/deposit">
+                          <AiOutlineDownload /> View Deposit
+                        </Dropdown.Item> */}
                         <Dropdown.Item as={Link} to="/account/withdraw">
                           <AiOutlineUpload /> View Withdrawals
                         </Dropdown.Item>
