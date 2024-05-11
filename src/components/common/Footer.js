@@ -15,7 +15,7 @@ const Footer = () => {
         <div className="footer_text_wrap">
           <ul>
             <li>
-              <Link to="https://jibchain.net">
+              <Link target="_blank" to="https://jibchain.net">
                 <Image src={jbc} alt="logo" width="50" fluid />
               </Link>
               {/* &nbsp; &nbsp;
@@ -33,7 +33,7 @@ const Footer = () => {
               </Link>
             </li> */}
             <li>
-              <Link to="https://twitter.com/jibchain">
+              <Link target="_blank" to="https://twitter.com/jibchain">
                 <AiFillTwitterCircle />
               </Link>
             </li>
