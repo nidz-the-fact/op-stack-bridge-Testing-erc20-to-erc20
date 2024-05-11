@@ -45,14 +45,14 @@ const Account = () => {
       </div>
       <div className="account_tabs">
         <ul>
-          <li>
+          {/* <li>
             <Link
               to="/account/deposit"
               className={`${location.pathname == "/account/deposit" ? "active" : ""}`}
             >
               Deposit
             </Link>
-          </li>
+          </li> */}
           <li>
             <Link
               to="/account/withdraw"
