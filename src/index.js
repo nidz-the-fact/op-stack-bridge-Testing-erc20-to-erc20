@@ -18,58 +18,6 @@ if (Number(process.env.REACT_APP_L1_CHAIN_ID) === 1) {
   currentChain = mainnet;
 }
 
-export const baseSepolia = {
-  id: Number(process.env.REACT_APP_L1_CHAIN_ID),
-  name: "baseSepolia",
-  network: "ETH",
-  iconUrl: "https://i.imgur.com/90fZHJQ.png",
-  iconBackground: "#000000",
-  nativeCurrency: {
-    decimals: 18,
-    name: "ETHEREUM",
-    symbol: "ETH",
-  },
-  rpcUrls: {
-    default: {
-      http: [process.env.REACT_APP_L1_RPC_URL],
-    },
-  },
-  blockExplorers: {
-    default: {
-      name: "Hypr Explorer",
-      url: process.env.REACT_APP_L1_EXPLORER_URL,
-    },
-  },
-  testnet: true,
-};
-
-export const RACE = {
-  id: Number(process.env.REACT_APP_L2_CHAIN_ID),
-  name: "Hypr",
-  network: "Hypr",
-  iconUrl: "https://i.imgur.com/90fZHJQ.png",
-  iconBackground: "#000000",
-  nativeCurrency: {
-    decimals: 18,
-    name: "ETHEREUM",
-    symbol: "ETH",
-  },
-  rpcUrls: {
-    default: {
-      http: [process.env.REACT_APP_L2_RPC_URL],
-    },
-  },
-  blockExplorers: {
-    default: {
-      name: "Block Explorer",
-      url: process.env.REACT_APP_L2_EXPLORER_URL,
-    },
-  },
-  testnet: true,
-};
-
-
-
 
 export const ThaiChain = {
   id: Number(process.env.REACT_APP_L1_CHAIN_ID),
@@ -174,7 +122,7 @@ export const HeraTestnet2 = {
 
 
 const { chains, publicClient } = configureChains(
-  // currentChain, RACE],
+  // currentChain, ],
   [JibchainTestnet, HeraTestnet, HeraTestnet2],
   [
     jsonRpcProvider({
