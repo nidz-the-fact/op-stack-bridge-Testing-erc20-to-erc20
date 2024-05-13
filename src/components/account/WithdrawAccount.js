@@ -35,12 +35,12 @@ const WithdrawAccount = () => {
     const bridges = {
       Standard: {
         l1Bridge: l1Contracts.L1StandardBridge,
-        l2Bridge: "0x4200000000000000000000000000000000000010",
+        l2Bridge: "0x4200000000000000000000000000000000000016",
         Adapter: optimismSDK.StandardBridgeAdapter,
       },
       ETH: {
         l1Bridge: l1Contracts.L1StandardBridge,
-        l2Bridge: "0x4200000000000000000000000000000000000010",
+        l2Bridge: "0x4200000000000000000000000000000000000016",
         Adapter: optimismSDK.ETHBridgeAdapter,
       },
     };
